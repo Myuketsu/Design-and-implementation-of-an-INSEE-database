@@ -1,0 +1,68 @@
+COD_VAR;LIB_VAR;LIB_VAR_LONG;COD_MOD;LIB_MOD;TYPE_VAR;LONG_VAR
+P20_POP;Population en 2020 (princ);Population en 2020;;;NUM;5
+P14_POP;Population en 2014 (princ);Population en 2020;;;NUM;5
+P09_POP;Population en 2009 (princ);Population en 2020;;;NUM;5
+D99_POP;Population en 1999 (dnbt);Population en 2020;;;NUM;5
+D90_POP;Population en 1990 (dnbt);Population sans les doubles comptes en 2020;;;NUM;5
+D82_POP;Population en 1982 (dnbt);Population sans les doubles comptes en 2020;;;NUM;4
+D75_POP;Population en 1975 (dnbt);Population sans les doubles comptes en 2020;;;NUM;4
+D68_POP;Population en 1968 (dnbt);Population sans les doubles comptes en 2020;;;NUM;4
+SUPERF;Superficie (en km²);Superficie (en km²) en 2020;;;NUM;4
+NAIS1420;Naissances entre 2014 et 2020;Nombre de naissances entre 01/01/2014 et 01/01/2020 en 2020;;;NUM;4
+NAIS0914;Naissances entre 2009 et 2014;Nombre de naissances entre 01/01/2009 et 01/01/2014 en 2020;;;NUM;4
+NAIS9909;Naissances entre 1999 et 2009;Nombre de naissances entre 01/01/1999 et 01/01/2009 en 2020;;;NUM;4
+NAIS9099;Naissances entre 1990 et 1999;Nombre de naissances entre RP1990 et RP1999 en 2020;;;NUM;4
+NAIS8290;Naissances entre 1982 et 1990;Nombre de naissances entre RP1982 et RP1990 en 2020;;;NUM;4
+NAIS7582;Naissances entre 1975 et 1982;Nombre de naissances entre RP1975 et RP1982 en 2020;;;NUM;4
+NAIS6875;Naissances entre 1968 et 1975;Nombre de naissances entre RP1968 et RP1975 en 2020;;;NUM;4
+DECE1420;Décès entre 2014 et 2020;Nombre de décès entre 01/01/2014 et 01/01/2020 en 2020;;;NUM;3
+DECE0914;Décès entre 2009 et 2014;Nombre de décès entre 01/01/2009 et 01/01/2014 en 2020;;;NUM;3
+DECE9909;Décès entre 1999 et 2009;Nombre de décès entre 01/01/1999 et 01/01/2009 en 2020;;;NUM;4
+DECE9099;Décès entre 1990 et 1999;Nombre de décès entre RP1990 et RP1999 en 2020;;;NUM;3
+DECE8290;Décès entre 1982 et 1990;Nombre de décès entre RP1982 et RP1990 en 2020;;;NUM;3
+DECE7582;Décès entre 1975 et 1982;Nombre de décès entre RP1975 et RP1982 en 2020;;;NUM;3
+DECE6875;Décès entre 1968 et 1975;Nombre de décès entre RP1968 et RP1975 en 2020;;;NUM;3
+P20_LOG;Logements en 2020 (princ);Nombre de logements en 2020;;;NUM;16
+P14_LOG;Logements en 2014 (princ);Nombre de logements en 2020;;;NUM;16
+P09_LOG;Logements en 2009 (princ);Nombre de logements en 2020;;;NUM;16
+D99_LOG;Logements en 1999 (dnbt);Nombre de logements en 2020;;;NUM;5
+D90_LOG;Logements en 1990 (dnbt);Nombre de logements en 2020;;;NUM;4
+D82_LOG;Logements en 1982 (dnbt);Nombre de logements en 2020;;;NUM;4
+D75_LOG;Logements en 1975 (dnbt);Nombre de logements en 2020;;;NUM;4
+D68_LOG;Logements en 1968 (dnbt);Nombre de logements en 2020;;;NUM;4
+P20_RP;Résidences principales (Ménages) en 2020 (princ);Nombre de résidences principales ou de ménages (le nombre de ménages est égal au nombre de résidences principales) en 2020;;;NUM;16
+P14_RP;Résidences principales (Ménages) en 2014 (princ);Nombre de résidences principales ou de ménages (le nombre de ménages est égal au nombre de résidences principales) en 2020;;;NUM;16
+P09_RP;Résidences principales (Ménages) en 2009 (princ);Nombre de résidences principales ou de ménages (le nombre de ménages est égal au nombre de résidences principales) en 2020;;;NUM;16
+D99_RP;Résidences principales (Ménages) en 1999 (dnbt);Nombre de résidences principales ou de ménages (le nombre de ménages est égal au nombre de résidences principales) en 2020;;;NUM;4
+D90_RP;Résidences principales (Ménages) en 1990 (dnbt);Nombre de résidences principales ou de ménages (le nombre de ménages est égal au nombre de résidences principales) en 2020;;;NUM;4
+D82_RP;Résidences principales (Ménages) en 1982 (dnbt);Nombre de résidences principales ou de ménages (le nombre de ménages est égal au nombre de résidences principales) en 2020;;;NUM;4
+D75_RP;Résidences principales (Ménages) en 1975 (dnbt);Nombre de résidences principales ou de ménages (le nombre de ménages est égal au nombre de résidences principales) en 2020;;;NUM;4
+D68_RP;Résidences principales (Ménages) en 1968 (dnbt);Nombre de résidences principales ou de ménages (le nombre de ménages est égal au nombre de résidences principales) en 2020;;;NUM;4
+P20_RSECOCC;Rés secondaires et logts occasionnels en 2020 (princ);Nombre de résidences secondaires et logements occasionnels en 2020;;;NUM;16
+P14_RSECOCC;Rés secondaires et logts occasionnels en 2014 (princ);Nombre de résidences secondaires et logements occasionnels en 2020;;;NUM;16
+P09_RSECOCC;Rés secondaires et logts occasionnels en 2009 (princ);Nombre de résidences secondaires et logements occasionnels en 2020;;;NUM;16
+D99_RSECOCC;Rés secondaires et logts occasionnels en 1999 (dnbt);Nombre de résidences secondaires et logements occasionnels en 2020;;;NUM;3
+D90_RSECOCC;Rés secondaires et logts occasionnels en 1990 (dnbt);Nombre de résidences secondaires et logements occasionnels en 2020;;;NUM;3
+D82_RSECOCC;Rés secondaires et logts occasionnels en 1982 (dnbt);Nombre de résidences secondaires et logements occasionnels en 2020;;;NUM;3
+D75_RSECOCC;Rés secondaires et logts occasionnels en 1975 (dnbt);Nombre de résidences secondaires et logements occasionnels en 2020;;;NUM;2
+D68_RSECOCC;Rés secondaires et logts occasionnels en 1968 (dnbt);Nombre de résidences secondaires et logements occasionnels en 2020;;;NUM;2
+P20_LOGVAC;Logements vacants en 2020 (princ);Nombre de logements vacants en 2020;;;NUM;16
+P14_LOGVAC;Logements vacants en 2014 (princ);Nombre de logements vacants en 2020;;;NUM;16
+P09_LOGVAC;Logements vacants en 2009 (princ);Nombre de logements vacants en 2020;;;NUM;16
+D99_LOGVAC;Logements vacants en 1999 (dnbt);Nombre de logements vacants en 2020;;;NUM;3
+D90_LOGVAC;Logements vacants en 1990 (dnbt);Nombre de logements vacants en 2020;;;NUM;4
+D82_LOGVAC;Logements vacants en 1982 (dnbt);Nombre de logements vacants en 2020;;;NUM;3
+D75_LOGVAC;Logements vacants en 1975 (dnbt);Nombre de logements vacants en 2020;;;NUM;3
+D68_LOGVAC;Logements vacants en 1968 (dnbt);Nombre de logements vacants en 2020;;;NUM;2
+P20_PMEN;Pop Ménages (Pop Rés princ) en 2020 (princ);Nombre de personnes des ménages  ou nombre de personnes des résidences principales (le nombre de personne des ménages est égal au nombre de personnes des résidences principales) en 2020;;;NUM;16
+P14_PMEN;Pop Ménages (Pop Rés princ) en 2014 (princ);Nombre de personnes des ménages  ou nombre de personnes des résidences principales (le nombre de personne des ménages est égal au nombre de personnes des résidences principales) en 2020;;;NUM;16
+P09_PMEN;Pop Ménages (Pop Rés princ) en 2009 (princ);Nombre de personnes des ménages  ou nombre de personnes des résidences principales (le nombre de personne des ménages est égal au nombre de personnes des résidences principales) en 2020;;;NUM;16
+D99_PMEN;Pop Ménages (Pop Rés princ) en 1999 (dnbt);Nombre de personnes des ménages  ou nombre de personnes des résidences principales (le nombre de personnes des ménages est égal au nombre de personnes des résidences principales) en 2020;;;NUM;5
+D90_NPER_RP;Pop Ménages (Pop Rés princ) en 1990 (dnbt);Nombre de personnes des ménages ou nombre de personnes des résidences principales (le nombre de personnes des ménages est égal au nombre de personnes des résidences principales) en 2020;;;NUM;5
+D82_NPER_RP;Pop Ménages (Pop Rés princ) en 1982 (dnbt);Nombre de personnes des ménages ou nombre de personnes des résidences principales (le nombre de personnes des ménages est égal au nombre de personnes des résidences principales) en 2020;;;NUM;4
+D75_NPER_RP;Pop Ménages (Pop Rés princ) en 1975 (dnbt);Nombre de personnes des ménages ou nombre de personnes des résidences principales (le nombre de personnes des ménages est égal au nombre de personnes des résidences principales) en 2020;;;NUM;4
+D68_NPER_RP;Pop Ménages (Pop Rés princ) en 1968 (dnbt);Nombre de personnes des ménages ou nombre de personnes des résidences principales (le nombre de personnes des ménages est égal au nombre de personnes des résidences principales) en 2020;;;NUM;4
+CODGEO;Code commune;Code commune;97501;Miquelon-Langlade;CHAR;5
+CODGEO;Code commune;Code commune;97502;Saint-Pierre;CHAR;5
+CODGEO;Code commune;Code commune;97701;Saint-Barthélemy;CHAR;5
+CODGEO;Code commune;Code commune;97801;Saint-Martin;CHAR;5
