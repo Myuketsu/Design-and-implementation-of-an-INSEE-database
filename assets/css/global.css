@@ -1,0 +1,10 @@
+* {
+    font-family: "Inter", sans-serif !important;
+}
+
+#app_title {
+    display: flex;
+    align-items: center;
+    border: 1px solid rgb(233, 236, 239);
+    font-size: 25px;
+}
