@@ -1,0 +1,22 @@
+[database]
+dbname = 'BDA'
+user = 'vscode'
+password = 'SQL_BDA'
+host = 'localhost'
+port = 5432
+
+[region]
+REG = 'code'
+LIBELLE = 'nom'
+CHEFLIEU = 'cheflieu'
+
+[departement]
+DEP = 'code'
+LIBELLE = 'nom'
+CHEFLIEU = 'cheflieu'
+REG = 'code_region'
+
+[commune]
+COM = 'code'
+LIBELLE = 'nom'
+DEP = 'code_departement'

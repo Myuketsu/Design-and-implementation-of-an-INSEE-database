@@ -1,12 +1,7 @@
-from configparser import ConfigParser
-import psycopg2
+from db_connector import excute_sql_file
 
-CONFIG_PATH = './data/config.ini'
+PATH_TO_SQL = './data/sql/'
 
-def get_cursor() -> psycopg2.extensions.cursor:
-    config = ConfigParser()
-    config.read(CONFIG_PATH)
-
-    conn: psycopg2.extensions.connection
-    with psycopg2.connect(**config['DATABASE']) as conn:
-        return conn.cursor()
+if __name__ == '__main__':
+    excute_sql_file(f'{PATH_TO_SQL}create_tables.sql')
+    # excute_sql_file('insert_data.sql')
