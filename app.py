@@ -1,5 +1,4 @@
 from dash import Dash, html, page_container
-from dash_bootstrap_components import themes, icons
 import dash_mantine_components as dmc
 
 from pages.menu.sidebar import get_sidebar
@@ -8,7 +7,6 @@ app = Dash(
     __name__,
     use_pages=True,
     prevent_initial_callbacks=True,
-    external_stylesheets=[themes.PULSE, icons.BOOTSTRAP],
     suppress_callback_exceptions=True
 )
 
@@ -39,9 +37,10 @@ app.layout = html.Div(
             page_container.children,
             id='page_content',
             style={
-                'margin-top': header_height,
-                'margin-left': sidebar_base_width,
-                'max-width': f'calc(100% - {sidebar_base_width}px)'
+                'marginTop': header_height,
+                'marginLeft': sidebar_base_width,
+                'maxWidth': f'calc(100% - {sidebar_base_width}px)',
+                'height': f'calc(100vh - {header_height}px)'
             }
         )
     ],

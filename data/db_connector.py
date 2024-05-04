@@ -1,11 +1,11 @@
 from psycopg2.pool import SimpleConnectionPool
 from psycopg2.extensions import connection
 
-from pandas import DataFrame, read_csv
+from pandas import DataFrame
 
 from io import StringIO
 
-from data_processing import load_config, select_and_rename_csv
+from data.data_processing import load_config
 
 __POOL: SimpleConnectionPool = SimpleConnectionPool(
     minconn=2, maxconn=8,
@@ -34,7 +34,7 @@ def execute_sql(query: str, vars: tuple | list | dict) -> DataFrame | None:
 
     See Also
     --------
-        execute : Execute a database operation (query or command) (https://www.psycopg.org/docs/cursor.html#cursor.execute).
+        execute : Execute a database operation (query or command)(https://www.psycopg.org/docs/cursor.html#cursor.execute).
 
     Exemple
     -------
@@ -65,7 +65,7 @@ def excute_sql_file(file_name: str) -> None:
     with open(file_name, 'r') as sql_file:
         execute_sql(sql_file.read())
 
-def copy_to_sql(file: StringIO, table: str, sep=',') -> None:
+def copy_to_sql(file: StringIO, table: str, sep: str=',') -> None:
     conn: connection = __POOL.getconn()
     with conn.cursor() as cursor:
         cursor.copy_from(
@@ -76,9 +76,3 @@ def copy_to_sql(file: StringIO, table: str, sep=',') -> None:
         conn.commit()
 
     __POOL.putconn(conn)
-
-if __name__ == '__main__':
-    # file_path, table = './data/raw_data/area/v_region_2023.csv', 'region'
-    # copy_to_sql(select_and_rename_csv(file_path, table), table)
-        
-    print(execute_sql('SELECT * FROM region;'))

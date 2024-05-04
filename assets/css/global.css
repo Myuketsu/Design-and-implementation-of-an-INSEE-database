@@ -2,10 +2,23 @@
     font-family: "Inter", sans-serif !important;
 }
 
+body {
+    margin: 0;
+}
+
 #app_title {
     display: flex;
     align-items: center;
     border: 1px solid rgb(233, 236, 239);
     font-size: 25px;
     background-color: rgb(255, 253, 253);
+}
+
+#page_content #_pages_content {
+    height: 100%;
+}
+
+.separator {
+    height: 100%;
+    border-left: solid rgb(233, 236, 239) 1px;
 }

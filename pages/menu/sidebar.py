@@ -14,14 +14,14 @@ def get_nav_link(label: str, path: str, icon: str) -> dmc.NavLink:
         label=label,
         icon=None if icon is None else get_icon(icon),
         href=path,
-        style={'white-space': 'nowrap'}
+        style={'whiteSpace': 'nowrap'}
     )
 
 def get_category(label: str, children: list[dmc.NavLink]) -> dmc.NavLink:
     return dmc.NavLink(
         label=label,
         icon=None if CATEGORIES.get(label) is None else get_icon(CATEGORIES.get(label).get('icon')),
-        style={'white-space': 'nowrap'},
+        style={'whiteSpace': 'nowrap'},
         childrenOffset=28,
         children=children
     )

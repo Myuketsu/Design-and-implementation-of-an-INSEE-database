@@ -1,0 +1,40 @@
+#requests_layout {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+}
+
+#request_selector_body {
+    display: flex;
+
+    justify-content: space-evenly;
+    align-items: center;
+
+    width: 100%;
+
+    padding: 8px;
+
+    border-bottom: solid rgb(233, 236, 239) 1px;;
+}
+
+#request_selector_SQL {
+    width: 80%;
+}
+
+#request_selector_SQL_viewer {
+    width: 100%;
+}
+
+#request_selector_SQL_viewer > * {
+    overflow: hidden !important;
+}
+
+#request_selector_SQL_viewer .mantine-ScrollArea-scrollbar {
+    display: none;
+}
+
+#request_body {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 36px;
+}
