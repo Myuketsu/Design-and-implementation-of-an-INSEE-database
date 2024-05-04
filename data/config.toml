@@ -8,15 +8,42 @@ port = 5432
 [region]
 REG = 'code'
 LIBELLE = 'nom'
-CHEFLIEU = 'cheflieu'
 
 [departement]
 DEP = 'code'
 LIBELLE = 'nom'
-CHEFLIEU = 'cheflieu'
 REG = 'code_region'
 
 [commune]
+COM = 'code'
+LIBELLE = 'nom'
+DEP = 'code_departement'
+
+[cheflieuRegion]
+CHEFLIEU = 'code'
+REG = 'code_region'
+
+
+[cheflieuDepartement]
+CHEFLIEU = 'code'
+DEP = 'code_departement'
+
+[mariage]
+COM = 'code'
+LIBELLE = 'nom'
+DEP = 'code_departement'
+
+[premier_mariage]
+COM = 'code'
+LIBELLE = 'nom'
+DEP = 'code_departement'
+
+[pays_mariage]
+COM = 'code'
+LIBELLE = 'nom'
+DEP = 'code_departement'
+
+[population]
 COM = 'code'
 LIBELLE = 'nom'
 DEP = 'code_departement'

@@ -6,6 +6,7 @@ CREATE TABLE region (
 CREATE TABLE departement (
     code VARCHAR(8) CONSTRAINT departement_key PRIMARY KEY,
     nom VARCHAR(200) NOT NULL,
+
     code_region VARCHAR(8) REFERENCES region(code)
 );
 
@@ -103,48 +104,62 @@ ALTER TABLE pays_mariage
 ADD CONSTRAINT mariage_region_fk FOREIGN KEY (idreg) REFERENCES region(code),
 ADD CONSTRAINT mariage_departement_fk FOREIGN KEY (iddep) REFERENCES departement(code);
 
-CREATE TABLE Population (
+CREATE TABLE population (
     id SERIAL PRIMARY KEY,
-    CODGEO VARCHAR(10),
-    SUPERF FLOAT,
-    P20_LOG FLOAT,
-    P14_LOG FLOAT,
-    P09_LOG FLOAT,
-    D99_LOG INT,
-    D90_LOG INT,
-    D82_LOG INT,
-    P20_LOGVAC FLOAT,
-    P14_LOGVAC FLOAT,
-    P09_LOGVAC FLOAT,
-    D99_LOGVAC INT,
-    D90_LOGVAC INT,
-    D82_LOGVAC INT,
-    DECE1420 INT,
-    DECE0914 INT,
-    DECE9909 INT,
-    DECE9099 INT,
-    DECE8290 INT,
-    NAIS1420 INT,
-    NAIS0914 INT,
-    NAIS9909 INT,
-    NAIS9099 INT,
-    NAIS8290 INT,
-    P20_POP FLOAT,
-    P14_POP FLOAT,
-    P09_POP FLOAT,
-    D99_POP INT,
-    D90_POP INT,
-    D82_POP INT,
-    P20_RP FLOAT,
-    P14_RP FLOAT,
-    P09_RP FLOAT,
-    D99_RP INT,
-    D90_RP INT,
-    D82_RP INT,
-    P20_RSECOCC FLOAT,
-    P14_RSECOCC FLOAT,
-    P09_RSECOCC FLOAT,
-    D99_RSECOCC INT,
-    D90_RSECOCC INT,
-    D82_RSECOCC INT
+    codgeo VARCHAR(10),
+    superf FLOAT,
+    p20_log FLOAT,
+    p14_log FLOAT,
+    p09_log FLOAT,
+    d99_log INT,
+    d90_log INT,
+    d82_log INT,
+    p20_logvac FLOAT,
+    p14_logvac FLOAT,
+    p09_logvac FLOAT,
+    d99_logvac INT,
+    d90_logvac INT,
+    d82_logvac INT,
+    dece1420 INT,
+    dece0914 INT,
+    dece9909 INT,
+    dece9099 INT,
+    dece8290 INT,
+    nais1420 INT,
+    nais0914 INT,
+    nais9909 INT,
+    nais9099 INT,
+    nais8290 INT,
+    p20_pop FLOAT,
+    p14_pop FLOAT,
+    p09_pop FLOAT,
+    d99_pop INT,
+    d90_pop INT,
+    d82_pop INT,
+    p20_rp FLOAT,
+    p14_rp FLOAT,
+    p09_rp FLOAT,
+    d99_rp INT,
+    d90_rp INT,
+    d82_rp INT,
+    p20_rsecocc FLOAT,
+    p14_rsecocc FLOAT,
+    p09_rsecocc FLOAT,
+    d99_rsecocc INT,
+    d90_rsecocc INT,
+    d82_rsecocc INT
 );
+
+
+-- On ajoute les colonnes pour les clés étrangères dans la table "population"
+ALTER TABLE population
+ADD COLUMN iddep VARCHAR(8),
+ADD COLUMN idcommune VARCHAR(10);
+
+UPDATE population
+SET iddep = LEFT(codgeo, 2),
+    idcommune = RIGHT(codgeo, 3);
+
+ALTER TABLE population
+ADD CONSTRAINT population_departement_fk FOREIGN KEY (iddep) REFERENCES departement(code),
+ADD CONSTRAINT population_commune_fk FOREIGN KEY (idcommune) REFERENCES commune(code);
