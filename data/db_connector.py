@@ -12,7 +12,7 @@ __POOL: SimpleConnectionPool = SimpleConnectionPool(
     **load_config('database')
 )
 
-def execute_sql(query: str, vars: tuple | list | dict) -> DataFrame | None:
+def execute_sql(query: str, vars: tuple | list | dict=None) -> DataFrame | None:
     """
     Exécute une requête SQL avec des variables associées et renvoie les résultats sous forme de DataFrame pandas
     ou None si la requête ne renvoie aucune donnée.
@@ -47,7 +47,7 @@ def execute_sql(query: str, vars: tuple | list | dict) -> DataFrame | None:
     """
     conn: connection = __POOL.getconn()
     with conn.cursor() as cursor:
-        cursor.execute(query, vars)
+        cursor.execute(query, tuple() if vars is None else vars)
 
         if cursor.description is None:
             conn.commit()
@@ -63,7 +63,7 @@ def execute_sql(query: str, vars: tuple | list | dict) -> DataFrame | None:
 
 def excute_sql_file(file_name: str) -> None:
     with open(file_name, 'r') as sql_file:
-        execute_sql(sql_file.read(), tuple())
+        execute_sql(sql_file.read())
 
 def copy_to_sql(file: StringIO, table: str, sep: str=',') -> None:
     conn: connection = __POOL.getconn()

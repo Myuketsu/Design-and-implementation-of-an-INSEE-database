@@ -1,17 +1,20 @@
 from dash import html, register_page
 from dash import callback, Input, Output
-from pandas import DataFrame
-
 import dash_mantine_components as dmc
 
+from collections import namedtuple
+
 from data.db_connector import execute_sql
+from view.figure import create_table
 
 register_page(__name__, path='/requests', name='Requêtes', title='Requêtes', order=2, icon='bi:database-down')
 
-REQUESTS = [
-    ('SELECT * FROM region;', tuple()),
-    ('SELECT * FROM departement;', tuple()),
-    ('SELECT * FROM commune;', tuple()),
+Request = namedtuple('Request', ['query', 'vars'])
+
+REQUESTS: list[Request] = [
+    Request('SELECT * FROM region;', tuple()),
+    Request('SELECT * FROM departement;', tuple()),
+    Request('SELECT * FROM commune;', tuple())
 ]
 
 # --- LAYOUT ---
@@ -42,7 +45,7 @@ def request_selector() -> html.Div:
                 [
                     dmc.Title('Contenu de la requête SQL', order=6),
                     dmc.Prism(
-                        REQUESTS[0][0] % REQUESTS[0][1],
+                        REQUESTS[0].query % REQUESTS[0].vars,
                         language='sql',
                         withLineNumbers=True,
                         id='request_selector_SQL_viewer'
@@ -70,12 +73,6 @@ def request_body() -> html.Div:
         id='request_body'
     )
 
-def create_table(df: DataFrame) -> list:
-    columns, values = df.columns, df.values
-    header = [html.Tr([html.Th(col) for col in columns])]
-    rows = [html.Tr([html.Td(cell) for cell in row]) for row in values]
-    return [html.Thead(header), html.Tbody(rows)]
-
 # --- CALLBACKS ---
 
 @callback(
@@ -86,7 +83,7 @@ def create_table(df: DataFrame) -> list:
     [
         Input('request_selector', 'value')
     ])
-def update_reconstructed_curve(in_request):
-    sql_query = REQUESTS[in_request][0] % REQUESTS[in_request][1]
+def update_reconstructed_curve(in_request: int) -> tuple:
+    sql_query = REQUESTS[in_request].query % REQUESTS[in_request].vars
     table = create_table(execute_sql(*REQUESTS[in_request]))
     return sql_query, table
