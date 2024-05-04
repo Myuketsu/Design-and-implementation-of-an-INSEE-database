@@ -63,7 +63,7 @@ def execute_sql(query: str, vars: tuple | list | dict) -> DataFrame | None:
 
 def excute_sql_file(file_name: str) -> None:
     with open(file_name, 'r') as sql_file:
-        execute_sql(sql_file.read())
+        execute_sql(sql_file.read(), tuple())
 
 def copy_to_sql(file: StringIO, table: str, sep: str=',') -> None:
     conn: connection = __POOL.getconn()

@@ -1,5 +1,5 @@
-from db_connector import excute_sql_file, execute_sql
-from data_processing import select_and_rename_csv
+from data.db_connector import excute_sql_file, execute_sql, copy_to_sql
+from data.data_processing import select_and_rename_csv
 
 PATH_TO_SQL = './data/sql/'
 

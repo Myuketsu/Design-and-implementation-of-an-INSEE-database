@@ -1,6 +1,6 @@
 CREATE TABLE region (
     code VARCHAR(8) CONSTRAINT region_key PRIMARY KEY,
-    nom VARCHAR(200) NOT NULL,
+    nom VARCHAR(200) NOT NULL
 );
 
 CREATE TABLE departement (
