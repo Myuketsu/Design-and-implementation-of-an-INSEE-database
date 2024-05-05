@@ -10,16 +10,16 @@ CONFIG_PATH = './data/config.toml'
 def load_config(section_name: str) -> dict[str, Any]:
     with open(CONFIG_PATH, 'rb') as config_file:
         return tomllib.load(config_file)[section_name]
-
-def select_and_rename_csv(file_name: str, section_config: str) -> StringIO:
-    buffer = StringIO()
+    
+def select_rename_columns(df: pd.DataFrame, section_config: str) -> pd.DataFrame:
     mapper = load_config(section_config)
+    return df.copy()[list(mapper.keys())].rename(columns=mapper)
 
-    pd.read_csv(
-        filepath_or_buffer=file_name
-    )[list(mapper.keys())].rename(
-        columns=mapper
-    ).to_csv(
+
+def DataFrame_to_buffer(df: pd.DataFrame) -> StringIO:
+    buffer = StringIO()
+
+    df.to_csv(
         path_or_buf=buffer,
         header=False,
         index=False
