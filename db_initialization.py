@@ -60,7 +60,7 @@ if __name__ == '__main__':
     # Pour le dossier pop_census
 
     file_path, table = f'{PATH_TO_DATA}pop_census/base-cc-serie-historique-2020.CSV', 'population'
-    df = read_csv(file_path, sep=';')
+    df = read_csv(file_path, sep=';', dtype='object')
     df = select_rename_columns(df, table)
     copy_to_sql(DataFrame_to_buffer(df), table)
    
