@@ -34,10 +34,10 @@ CREATE TABLE cheflieuDepartement (
 -- D1
 CREATE TABLE mariage (
     id SERIAL PRIMARY KEY,
-    TYPMAR3 VARCHAR(5),
-    REGDEP_MAR VARCHAR(5),
-    GRAGE VARCHAR(5),
-    NBMARIES INT
+    type_de_mariage VARCHAR(5),
+    region_departement VARCHAR(5),
+    groupe_age VARCHAR(5),
+    nombre_de_maries INT
 );
 
 -- On ajoute les colonnes pour les clés étrangères dans la table mariage qu'on avait mis sur la photo
@@ -59,10 +59,10 @@ ADD CONSTRAINT mariage_departement_fk FOREIGN KEY (iddep) REFERENCES departement
 -- D3
 CREATE TABLE premier_mariage (
     id SERIAL PRIMARY KEY,
-    TYPMAR3 VARCHAR(5),
-    REGDEP_MAR VARCHAR(5),
-    GRAGE VARCHAR(5),
-    NBMARIES INT
+    type_de_mariage VARCHAR(5),
+    region_departement VARCHAR(5),
+    groupe_age VARCHAR(5),
+    nombre_de_maries INT
 );
 
 -- On ajoute les colonnes pour les clés étrangères dans la table mariage qu'on avait mis sur la photo
@@ -83,10 +83,10 @@ ADD CONSTRAINT mariage_departement_fk FOREIGN KEY (iddep) REFERENCES departement
 -- D5
 CREATE TABLE pays_mariage (
     id SERIAL PRIMARY KEY,
-    TYPMAR2 VARCHAR(2),
-    REGDEP_DOMI VARCHAR(5),
-    LNEPOUX VARCHAR(7),
-    NBMAR INT
+    type_de_mariage VARCHAR(2),
+    region_departement VARCHAR(5),
+    pays_naissance VARCHAR(7),
+    nombre_de_maries INT
 );
 
 -- On ajoute les colonnes pour les clés étrangères dans la table mariage qu'on avait mis sur la photo
@@ -106,48 +106,48 @@ ADD CONSTRAINT mariage_departement_fk FOREIGN KEY (iddep) REFERENCES departement
 
 CREATE TABLE population (
     id SERIAL PRIMARY KEY,
-    codgeo VARCHAR(10),
-    superf FLOAT,
-    p20_log FLOAT,
-    p14_log FLOAT,
-    p09_log FLOAT,
-    d99_log INT,
-    d90_log INT,
-    d82_log INT,
-    p20_logvac FLOAT,
-    p14_logvac FLOAT,
-    p09_logvac FLOAT,
-    d99_logvac INT,
-    d90_logvac INT,
-    d82_logvac INT,
-    dece1420 INT,
-    dece0914 INT,
-    dece9909 INT,
-    dece9099 INT,
-    dece8290 INT,
-    nais1420 INT,
-    nais0914 INT,
-    nais9909 INT,
-    nais9099 INT,
-    nais8290 INT,
-    p20_pop FLOAT,
-    p14_pop FLOAT,
-    p09_pop FLOAT,
-    d99_pop INT,
-    d90_pop INT,
-    d82_pop INT,
-    p20_rp FLOAT,
-    p14_rp FLOAT,
-    p09_rp FLOAT,
-    d99_rp INT,
-    d90_rp INT,
-    d82_rp INT,
-    p20_rsecocc FLOAT,
-    p14_rsecocc FLOAT,
-    p09_rsecocc FLOAT,
-    d99_rsecocc INT,
-    d90_rsecocc INT,
-    d82_rsecocc INT
+    departement_commune VARCHAR(10),
+    superficie FLOAT,
+    nombre_logement_2020 FLOAT,
+    nombre_logement_2014 FLOAT,
+    nombre_logement_2009 FLOAT,
+    nombre_logement_1999 INT,
+    nombre_logement_1990 INT,
+    nombre_logement_1982 INT,
+    nombre_logements_vacants_2020 FLOAT,
+    nombre_logements_vacants_2014 FLOAT,
+    nombre_logements_vacants_2009 FLOAT,
+    nombre_logements_vacants_1999 INT,
+    nombre_logements_vacants_1990 INT,
+    nombre_logements_vacants_1982 INT,
+    nombre_deces_1420 INT,
+    nombre_deces_0914 INT,
+    nombre_deces_9909 INT,
+    nombre_deces_9099 INT,
+    nombre_deces_8290 INT,
+    nombre_naissance_1420 INT,
+    nombre_naissance_0914 INT,
+    nombre_naissance_9909 INT,
+    nombre_naissance_9099 INT,
+    nombre_naissance_8290 INT,
+    population_2020 FLOAT,
+    population_2014 FLOAT,
+    population_2009 FLOAT,
+    population_2099 INT,
+    population_2090 INT,
+    population_2082 INT,
+    residence_principale_2020 FLOAT,
+    residence_principale_2014 FLOAT,
+    residence_principale_2009 FLOAT,
+    residence_principale_1999 INT,
+    residence_principale_1990 INT,
+    residence_principale_1982 INT,
+    residence_secondaire_2020 FLOAT,
+    residence_secondaire_2014 FLOAT,
+    residence_secondaire_2009 FLOAT,
+    residence_secondaire_1999 INT,
+    residence_secondaire_1990 INT,
+    residence_secondaire_1982 INT
 );
 
 

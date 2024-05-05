@@ -6,3 +6,5 @@
 TODO LIST:
 
 Voir les types de varchar ... le nombre de caracteres qu'on leur donne...
+
+Changer le config avec les majuscules lol sinon ça ne marchera pas (tkt Alex c'est pour moi, pour ne pas l'oublier)
