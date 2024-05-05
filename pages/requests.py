@@ -7,15 +7,14 @@ from collections import namedtuple
 
 from data.db_connector import execute_sql
 from data.data_processing import load_query
-from view.figure import create_table
 
 register_page(__name__, path='/requests', name='Requêtes', title='Requêtes', order=2, icon='bi:database-down')
 
 query_file = load_query('./data/sql/requests.toml')
 
-Request = namedtuple('Request', ['desc', 'query'])
+Request = namedtuple('Request', ['title', 'desc', 'query'])
 REQUESTS: list[Request] = [
-    Request(item.get('desc'), item.get('query'))
+    Request(item.get('title'), item.get('desc'), item.get('query'))
     for item in query_file.values()
 ]
 
@@ -32,7 +31,7 @@ def layout():
 
 def request_selector() -> html.Div:
     data = [
-        {'value': index, 'label': f'Requête {index + 1}'} for index in range(len(REQUESTS))
+        {'value': index, 'label': request.title} for index, request in enumerate(REQUESTS)
     ]
     return html.Div(
         [
@@ -63,11 +62,11 @@ def request_body() -> html.Div:
     df = execute_sql(REQUESTS[0].query)
     return html.Div(
         [
-            dmc.Title('Résultat de la requête sélectionnée', order=6),
+            dmc.Title(REQUESTS[0].title, order=6, id='request_body_table_title'),
             DataTable(
                 data=df.to_dict('records'),
                 columns=[{'id': col, 'name': col} for col in df.columns],
-                page_size=21,
+                page_size=19,
                 style_table={
                     'border-left': '1px solid rgb(233, 236, 239)',
                     'border-right': '1px solid rgb(233, 236, 239)'
@@ -86,7 +85,8 @@ def request_body() -> html.Div:
     [
         Output('request_selector_SQL_viewer', 'children'),
         Output('request_body_table', 'data'),
-        Output('request_body_table', 'columns')
+        Output('request_body_table', 'columns'),
+        Output('request_body_table_title', 'children')
     ],
     [
         Input('request_selector', 'value')
@@ -98,4 +98,6 @@ def update_reconstructed_curve(in_request: int) -> tuple:
     data = df.to_dict('records')
     columns = [{'id': col, 'name': col} for col in df.columns]
 
-    return sql_query, data, columns
+    title_table = REQUESTS[in_request].title
+
+    return sql_query, data, columns, title_table
