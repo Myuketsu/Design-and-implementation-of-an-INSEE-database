@@ -36,11 +36,14 @@ def view_selector() -> html.Div:
     ]
     return html.Div(
         [
-            dmc.Select(
-                label=dmc.Text('Selection de la vue', weight=700),
-                value=0,
-                data=data,
-                id='view_selector'
+            html.Div(
+                dmc.Select(
+                    label=dmc.Text('Selection de la vue', weight=700),
+                    value=0,
+                    data=data,
+                    id='view_selector'
+                ),
+                id='view_selector_box'
             ),
             html.Div(className='separator'),
             html.Div(

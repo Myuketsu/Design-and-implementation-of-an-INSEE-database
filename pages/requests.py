@@ -35,11 +35,16 @@ def request_selector() -> html.Div:
     ]
     return html.Div(
         [
-            dmc.Select(
-                label=dmc.Text('Selection de la requête', weight=700),
-                value=0,
-                data=data,
-                id='request_selector'
+            html.Div(
+                [
+                    dmc.Select(
+                        label=dmc.Text('Selection de la requête', weight=700),
+                        value=0,
+                        data=data,
+                        id='request_selector'
+                    )
+                ],
+                id='request_selector_box'
             ),
             html.Div(className='separator'),
             html.Div(

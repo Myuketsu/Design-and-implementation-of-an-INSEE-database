@@ -42,7 +42,7 @@ FROM commune C
 JOIN departement D ON C.code_departement = D.code
 JOIN population P ON P.code_commune = C.code
 WHERE P.population_2020 >= 20000 AND c.code_departement = '33'
-ORDER BY P.population_2020 DESC"""
+ORDER BY P.population_2020 DESC;"""
 
 [request_5]
 title = 'Région la plus peuplée'
