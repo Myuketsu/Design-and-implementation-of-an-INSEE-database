@@ -44,16 +44,19 @@ if __name__ == '__main__':
 
     file_path, table = f'{PATH_TO_DATA}wedding/Dep1.csv', 'mariage'
     df = read_csv(file_path, sep=';')
+    df = df[~((df['REGDEP_MAR'].str.contains('XX')) | (df['REGDEP_MAR'].str.len() < 4))] # Filtration des données
     df = select_rename_columns(df, table)
     copy_to_sql(DataFrame_to_buffer(df), table)
 
     file_path, table = f'{PATH_TO_DATA}wedding/Dep3.csv', 'premier_mariage'
     df = read_csv(file_path, sep=';')
+    df = df[~((df['REGDEP_MAR'].str.contains('XX')) | (df['REGDEP_MAR'].str.len() < 4))] # Filtration des données
     df = select_rename_columns(df, table)
     copy_to_sql(DataFrame_to_buffer(df), table)
 
     file_path, table = f'{PATH_TO_DATA}wedding/Dep5.csv', 'pays_mariage'
     df = read_csv(file_path, sep=';')
+    df = df[~((df['REGDEP_DOMI'].str.contains('XX')) | (df['REGDEP_DOMI'].str.len() < 4))] # Filtration des données
     df = select_rename_columns(df, table)
     copy_to_sql(DataFrame_to_buffer(df), table)
 
@@ -61,6 +64,7 @@ if __name__ == '__main__':
 
     file_path, table = f'{PATH_TO_DATA}pop_census/base-cc-serie-historique-2020.CSV', 'population'
     df = read_csv(file_path, sep=';', dtype='object')
+    df = df[~df['CODGEO'].str.startswith('97')]
     df = select_rename_columns(df, table)
     copy_to_sql(DataFrame_to_buffer(df), table)
    

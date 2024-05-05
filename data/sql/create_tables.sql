@@ -1,10 +1,8 @@
--- OK
 CREATE TABLE region (
     code VARCHAR(8) CONSTRAINT region_key PRIMARY KEY,
     nom VARCHAR(200) NOT NULL
 );
 
--- OK
 CREATE TABLE departement (
     code VARCHAR(8) CONSTRAINT departement_key PRIMARY KEY,
     nom VARCHAR(200) NOT NULL,
@@ -31,8 +29,6 @@ CREATE TABLE cheflieuDepartement (
     code_departement VARCHAR(8) REFERENCES departement(code)
 );
 
--- Pour les mariages, il faut voir comment faire en sorte que REGDEP_MAR et REGDEP_DOMI soient des clés étrangères qui réfèrent à la table departement et région
--- Il faudra donc séparer les VARCHAR
 -- D1
 CREATE TABLE mariage (
     id SERIAL PRIMARY KEY,
@@ -41,22 +37,6 @@ CREATE TABLE mariage (
     groupe_age VARCHAR(5),
     nombre_de_maries INT
 );
-
--- On ajoute les colonnes pour les clés étrangères dans la table mariage qu'on avait mis sur la photo
-ALTER TABLE mariage
-ADD COLUMN idreg VARCHAR(8),
-ADD COLUMN iddep VARCHAR(8);
-
--- -- On coupe les REGDEP_MAR et REGDEP_DOMI pour avoir les codes région et département
--- UPDATE mariage
--- SET idreg = LEFT(region_departement, 2),
---     iddep = RIGHT(region_departement, 2);
-
--- -- Et on ajoute les contraintes de clé étrangère
--- ALTER TABLE mariage
--- ADD CONSTRAINT mariage_region_fk FOREIGN KEY (idreg) REFERENCES region(code),
--- ADD CONSTRAINT mariage_departement_fk FOREIGN KEY (iddep) REFERENCES departement(code);
-
 
 -- D3
 CREATE TABLE premier_mariage (
@@ -67,21 +47,6 @@ CREATE TABLE premier_mariage (
     nombre_de_maries INT
 );
 
--- On ajoute les colonnes pour les clés étrangères dans la table mariage qu'on avait mis sur la photo
-ALTER TABLE premier_mariage
-ADD COLUMN idreg VARCHAR(8),
-ADD COLUMN iddep VARCHAR(8);
-
--- On coupe les REGDEP_MAR et REGDEP_DOMI pour avoir les codes région et département
-UPDATE premier_mariage
-SET idreg = LEFT(region_departement, 2),
-    iddep = RIGHT(region_departement, 2);
-
--- Et on ajoute les contraintes de clé étrangère
-ALTER TABLE premier_mariage
-ADD CONSTRAINT mariage_region_fk FOREIGN KEY (idreg) REFERENCES region(code),
-ADD CONSTRAINT mariage_departement_fk FOREIGN KEY (iddep) REFERENCES departement(code);
-
 -- D5
 CREATE TABLE pays_mariage (
     id SERIAL PRIMARY KEY,
@@ -90,21 +55,6 @@ CREATE TABLE pays_mariage (
     pays_naissance VARCHAR(7),
     nombre_de_maries INT
 );
-
--- On ajoute les colonnes pour les clés étrangères dans la table mariage qu'on avait mis sur la photo
-ALTER TABLE pays_mariage
-ADD COLUMN idreg VARCHAR(8),
-ADD COLUMN iddep VARCHAR(8);
-
--- On coupe les REGDEP_MAR et REGDEP_DOMI pour avoir les codes région et département
-UPDATE pays_mariage
-SET idreg = LEFT(region_departement, 2),
-    iddep = RIGHT(region_departement, 2);
-
--- Et on ajoute les contraintes de clé étrangère
-ALTER TABLE pays_mariage
-ADD CONSTRAINT mariage_region_fk FOREIGN KEY (idreg) REFERENCES region(code),
-ADD CONSTRAINT mariage_departement_fk FOREIGN KEY (iddep) REFERENCES departement(code);
 
 CREATE TABLE population (
     id SERIAL PRIMARY KEY,
@@ -143,17 +93,3 @@ CREATE TABLE population (
     residence_secondaire_1999 INT,
     residence_secondaire_1990 INT
 );
-
-
--- On ajoute les colonnes pour les clés étrangères dans la table "population"
-ALTER TABLE population
-ADD COLUMN iddep VARCHAR(8),
-ADD COLUMN idcommune VARCHAR(10);
-
-UPDATE population
-SET iddep = LEFT(departement_commune, 2),
-    idcommune = RIGHT(departement_commune, 3);
-
-ALTER TABLE population
-ADD CONSTRAINT population_departement_fk FOREIGN KEY (iddep) REFERENCES departement(code),
-ADD CONSTRAINT population_commune_fk FOREIGN KEY (idcommune) REFERENCES commune(code);
