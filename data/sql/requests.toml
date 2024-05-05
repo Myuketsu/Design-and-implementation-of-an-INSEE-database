@@ -1,4 +1,5 @@
 [request_0]
+title = 'Population totale par département en 2020'
 desc = 'On affiche la somme de la population de chaque département en 2020.'
 query = """\
 SELECT iddep AS "Code du département", D.nom AS "Département", SUM(population_2020) AS "Population totale"
@@ -8,12 +9,14 @@ GROUP BY iddep, nom
 ORDER BY iddep ASC;"""
 
 [request_1]
+title = ''
 desc = ''
 query = """\
 SELECT *
 FROM departement;"""
 
 [request_2]
+title = ''
 desc = ''
 query = """\
 SELECT *
@@ -22,6 +25,7 @@ FROM commune;"""
 # REQUETES DE BASE (Celles écrites dans l'énoncé)
 
 [request_3]
+title = "Départements d'Auvergne-Rhône-Alpes"
 desc = 'On affiche la liste des départements de la région Auvergne-Rhône-Alpes.'
 query = """\
 SELECT D.code AS "Code du département", D.nom AS "Nom des départements"
@@ -30,7 +34,8 @@ JOIN region R ON D.code_region = R.code
 WHERE R.nom = 'Auvergne-Rhône-Alpes';"""
 
 [request_4]
-desc = 'On affiche la liste des communes de plus de 20 000 habitants de la Gironde dans l ordre décroissant.'
+title = 'Communes de plus de 20 000 habitants en Gironde'
+desc = "On affiche la liste des communes de plus de 20 000 habitants de la Gironde dans l'ordre décroissant."
 query = """\
 SELECT c.nom AS "Nom de la commune", P.population_2020 AS "Nombre de personne habitant la commune"
 FROM commune C
@@ -40,6 +45,7 @@ WHERE P.population_2020 >= 20000 AND c.code_departement = '33'
 ORDER BY P.population_2020 DESC"""
 
 [request_5]
+title = 'Région la plus peuplée'
 desc = 'On affiche la région la plus peuplée.'
 query = """\
 SELECT R.nom AS "Nom de la région", SUM(P.population_2020) AS "Population totale"
@@ -53,6 +59,7 @@ LIMIT 1;"""
 # REQUETES FREESTYLE
 
 [request_6]
+title = 'Départements de la région Grand Est'
 desc = 'On affiche la liste des départements de la région Grand Est.'
 query = """\
 SELECT D.nom AS "Nom des départements"
@@ -61,6 +68,7 @@ JOIN region R ON D.code_region = R.code
 WHERE R.nom = 'Grand Est';"""
 
 [request_7]
+title = 'Départements avec nouveaux mariés'
 desc = 'On affiche la liste des départements qui comptent au moins 10 nouveaux mariés de type HF-H (mixte).'
 query = """\
 SELECT D.nom, PM.type_de_mariage, PM.nombre_de_maries
