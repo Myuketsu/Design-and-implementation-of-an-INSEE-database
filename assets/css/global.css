@@ -22,3 +22,7 @@ body {
     height: 100%;
     border-left: solid rgb(233, 236, 239) 1px;
 }
+
+.previous-next-container {
+    text-align: left !important;
+}
