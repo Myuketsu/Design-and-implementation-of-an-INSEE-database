@@ -1,0 +1,17 @@
+[request_0]
+desc = ''
+query = """\
+SELECT *
+FROM region;"""
+
+[request_1]
+desc = ''
+query = """\
+SELECT *
+FROM departement;"""
+
+[request_2]
+desc = ''
+query = """\
+SELECT *
+FROM commune;"""

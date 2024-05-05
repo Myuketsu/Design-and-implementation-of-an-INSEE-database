@@ -1,20 +1,22 @@
 from dash import html, register_page
 from dash import callback, Input, Output
+from dash.dash_table import DataTable
 import dash_mantine_components as dmc
 
 from collections import namedtuple
 
 from data.db_connector import execute_sql
+from data.data_processing import load_query
 from view.figure import create_table
 
 register_page(__name__, path='/requests', name='Requêtes', title='Requêtes', order=2, icon='bi:database-down')
 
-Request = namedtuple('Request', ['query', 'vars'])
+query_file = load_query('./data/sql/requests.toml')
 
+Request = namedtuple('Request', ['desc', 'query'])
 REQUESTS: list[Request] = [
-    Request('SELECT * FROM region;', tuple()),
-    Request('SELECT * FROM departement;', tuple()),
-    Request('SELECT * FROM commune;', tuple())
+    Request(item.get('desc'), item.get('query'))
+    for item in query_file.values()
 ]
 
 # --- LAYOUT ---
@@ -45,7 +47,7 @@ def request_selector() -> html.Div:
                 [
                     dmc.Title('Contenu de la requête SQL', order=6),
                     dmc.Prism(
-                        REQUESTS[0].query % REQUESTS[0].vars,
+                        REQUESTS[0].query,
                         language='sql',
                         withLineNumbers=True,
                         id='request_selector_SQL_viewer'
@@ -58,15 +60,20 @@ def request_selector() -> html.Div:
     )
 
 def request_body() -> html.Div:
+    df = execute_sql(REQUESTS[0].query)
     return html.Div(
         [
             dmc.Title('Résultat de la requête sélectionnée', order=6),
-            dmc.Table(
-                children=create_table(execute_sql(*REQUESTS[0])),
-                striped=True,
-                highlightOnHover=True,
-                withBorder=True,
-                withColumnBorders=False,
+            DataTable(
+                data=df.to_dict('records'),
+                columns=[{'id': col, 'name': col} for col in df.columns],
+                page_size=21,
+                style_table={
+                    'border-left': '1px solid rgb(233, 236, 239)',
+                    'border-right': '1px solid rgb(233, 236, 239)'
+                },
+                style_cell={'textAlign': 'left'},
+                style_as_list_view=True,
                 id='request_body_table'
             )
         ],
@@ -78,12 +85,17 @@ def request_body() -> html.Div:
 @callback(
     [
         Output('request_selector_SQL_viewer', 'children'),
-        Output('request_body_table', 'children')
+        Output('request_body_table', 'data'),
+        Output('request_body_table', 'columns')
     ],
     [
         Input('request_selector', 'value')
     ])
 def update_reconstructed_curve(in_request: int) -> tuple:
-    sql_query = REQUESTS[in_request].query % REQUESTS[in_request].vars
-    table = create_table(execute_sql(*REQUESTS[in_request]))
-    return sql_query, table
+    sql_query = REQUESTS[in_request].query
+
+    df = execute_sql(REQUESTS[in_request].query)
+    data = df.to_dict('records')
+    columns = [{'id': col, 'name': col} for col in df.columns]
+
+    return sql_query, data, columns

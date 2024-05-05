@@ -1,0 +1,15 @@
+[pop_departement]
+view_sql = """\
+CREATE VIEW pop_departement AS
+SELECT  
+FROM  
+WHERE  ;"""
+query = 'SELECT * FROM pop_departement;'
+
+[pop_region]
+view_sql = """\
+CREATE VIEW pop_region AS
+SELECT  
+FROM  
+WHERE  ;"""
+query = 'SELECT * FROM pop_region;'
