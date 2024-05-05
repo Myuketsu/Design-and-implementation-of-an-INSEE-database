@@ -67,6 +67,12 @@ if __name__ == '__main__':
     df = df[~df['CODGEO'].str.startswith('97')]
     df = select_rename_columns(df, table)
     copy_to_sql(DataFrame_to_buffer(df), table)
+
+    # ALTER TABLES
+    excute_sql_file(f'{PATH_TO_SQL}alter_tables.sql')
+
+    # UPDATE TABLES
+    excute_sql_file(f'{PATH_TO_SQL}update_tables.sql')
    
     # TEST SELECT
     # print(execute_sql('SELECT * FROM region;'))

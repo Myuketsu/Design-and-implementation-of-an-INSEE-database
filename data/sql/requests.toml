@@ -1,8 +1,11 @@
 [request_0]
-desc = ''
+desc = 'On affiche la somme de la population de chaque département en 2020.'
 query = """\
-SELECT *
-FROM region;"""
+SELECT iddep AS "Code du département", D.nom AS "Département", SUM(population_2020) AS "Population totale"
+FROM population P
+JOIN departement D ON P.iddep = D.code
+GROUP BY iddep, nom
+ORDER BY iddep ASC;"""
 
 [request_1]
 desc = ''
@@ -15,3 +18,52 @@ desc = ''
 query = """\
 SELECT *
 FROM commune;"""
+
+# REQUETES DE BASE (Celles écrites dans l'énoncé)
+
+[request_3]
+desc = 'On affiche la liste des départements de la région Auvergne-Rhône-Alpes.'
+query = """\
+SELECT D.code AS "Code du département", D.nom AS "Nom des départements"
+FROM departement D
+JOIN region R ON D.code_region = R.code
+WHERE R.nom = 'Auvergne-Rhône-Alpes';"""
+
+[request_4]
+desc = 'On affiche la liste des communes de plus de 20 000 habitants de la Gironde dans l ordre décroissant.'
+query = """\
+SELECT c.nom AS "Nom de la commune", P.population_2020 AS "Nombre de personne habitant la commune"
+FROM commune C
+JOIN departement D ON C.code_departement = D.code
+JOIN population P ON P.code_commune = C.code
+WHERE P.population_2020 >= 20000 AND c.code_departement = '33'
+ORDER BY P.population_2020 DESC"""
+
+[request_5]
+desc = 'On affiche la région la plus peuplée.'
+query = """\
+SELECT R.nom AS "Nom de la région", SUM(P.population_2020) AS "Population totale"
+FROM region R
+JOIN departement D ON R.code = D.code_region
+JOIN population P ON P.iddep = D.code
+GROUP BY R.nom
+ORDER BY SUM(P.population_2020) DESC
+LIMIT 1;"""
+
+# REQUETES FREESTYLE
+
+[request_6]
+desc = 'On affiche la liste des départements de la région Grand Est.'
+query = """\
+SELECT D.nom AS "Nom des départements"
+FROM departement D
+JOIN region R ON D.code_region = R.code
+WHERE R.nom = 'Grand Est';"""
+
+[request_7]
+desc = 'On affiche la liste des départements qui comptent au moins 10 nouveaux mariés de type HF-H (mixte).'
+query = """\
+SELECT D.nom, PM.type_de_mariage, PM.nombre_de_maries
+FROM departement D
+JOIN premier_mariage PM ON D.code = PM.iddep
+WHERE type_de_mariage = 'HF-H' AND PM.nombre_de_maries >= 300;"""

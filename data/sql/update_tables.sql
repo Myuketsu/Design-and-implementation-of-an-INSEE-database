@@ -23,5 +23,4 @@ SET idreg = LEFT(region_departement, 2),
 -- Update table population
 
 UPDATE population
-SET iddep = LEFT(departement_commune, 2),
-    idcommune = RIGHT(departement_commune, 3);
+SET iddep = LEFT(code_commune, 2);

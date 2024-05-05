@@ -47,7 +47,7 @@ LNEPOUX = 'pays_naissance'
 NBMAR = 'nombre_de_maries'
 
 [population]
-CODGEO = 'departement_commune'
+CODGEO = 'code_commune'
 SUPERF = 'superficie'
 P20_LOG = 'nombre_logement_2020'
 P14_LOG = 'nombre_logement_2014'

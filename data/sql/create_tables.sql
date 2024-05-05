@@ -58,7 +58,7 @@ CREATE TABLE pays_mariage (
 
 CREATE TABLE population (
     id SERIAL PRIMARY KEY,
-    departement_commune VARCHAR(10),
+    code_commune VARCHAR(10),
     superficie FLOAT,
     nombre_logement_2020 FLOAT,
     nombre_logement_2014 FLOAT,
