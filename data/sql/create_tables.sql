@@ -1,8 +1,10 @@
+-- OK
 CREATE TABLE region (
     code VARCHAR(8) CONSTRAINT region_key PRIMARY KEY,
     nom VARCHAR(200) NOT NULL
 );
 
+-- OK
 CREATE TABLE departement (
     code VARCHAR(8) CONSTRAINT departement_key PRIMARY KEY,
     nom VARCHAR(200) NOT NULL,
@@ -47,8 +49,8 @@ ADD COLUMN iddep VARCHAR(8);
 
 -- On coupe les REGDEP_MAR et REGDEP_DOMI pour avoir les codes région et département
 UPDATE mariage
-SET idreg = LEFT(REGDEP_MAR, 2),
-    iddep = RIGHT(REGDEP_MAR, 2);
+SET idreg = LEFT(region_departement, 2),
+    iddep = RIGHT(region_departement, 2);
 
 -- Et on ajoute les contraintes de clé étrangère
 ALTER TABLE mariage
@@ -72,8 +74,8 @@ ADD COLUMN iddep VARCHAR(8);
 
 -- On coupe les REGDEP_MAR et REGDEP_DOMI pour avoir les codes région et département
 UPDATE premier_mariage
-SET idreg = LEFT(REGDEP_MAR, 2),
-    iddep = RIGHT(REGDEP_MAR, 2);
+SET idreg = LEFT(region_departement, 2),
+    iddep = RIGHT(region_departement, 2);
 
 -- Et on ajoute les contraintes de clé étrangère
 ALTER TABLE premier_mariage
@@ -96,8 +98,8 @@ ADD COLUMN iddep VARCHAR(8);
 
 -- On coupe les REGDEP_MAR et REGDEP_DOMI pour avoir les codes région et département
 UPDATE pays_mariage
-SET idreg = LEFT(REGDEP_DOMI, 2),
-    iddep = RIGHT(REGDEP_DOMI, 2);
+SET idreg = LEFT(region_departement, 2),
+    iddep = RIGHT(region_departement, 2);
 
 -- Et on ajoute les contraintes de clé étrangère
 ALTER TABLE pays_mariage
@@ -157,8 +159,8 @@ ADD COLUMN iddep VARCHAR(8),
 ADD COLUMN idcommune VARCHAR(10);
 
 UPDATE population
-SET iddep = LEFT(codgeo, 2),
-    idcommune = RIGHT(codgeo, 3);
+SET iddep = LEFT(departement_commune, 2),
+    idcommune = RIGHT(departement_commune, 3);
 
 ALTER TABLE population
 ADD CONSTRAINT population_departement_fk FOREIGN KEY (iddep) REFERENCES departement(code),
