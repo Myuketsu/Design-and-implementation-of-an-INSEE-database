@@ -47,15 +47,15 @@ ALTER TABLE mariage
 ADD COLUMN idreg VARCHAR(8),
 ADD COLUMN iddep VARCHAR(8);
 
--- On coupe les REGDEP_MAR et REGDEP_DOMI pour avoir les codes région et département
-UPDATE mariage
-SET idreg = LEFT(region_departement, 2),
-    iddep = RIGHT(region_departement, 2);
+-- -- On coupe les REGDEP_MAR et REGDEP_DOMI pour avoir les codes région et département
+-- UPDATE mariage
+-- SET idreg = LEFT(region_departement, 2),
+--     iddep = RIGHT(region_departement, 2);
 
--- Et on ajoute les contraintes de clé étrangère
-ALTER TABLE mariage
-ADD CONSTRAINT mariage_region_fk FOREIGN KEY (idreg) REFERENCES region(code),
-ADD CONSTRAINT mariage_departement_fk FOREIGN KEY (iddep) REFERENCES departement(code);
+-- -- Et on ajoute les contraintes de clé étrangère
+-- ALTER TABLE mariage
+-- ADD CONSTRAINT mariage_region_fk FOREIGN KEY (idreg) REFERENCES region(code),
+-- ADD CONSTRAINT mariage_departement_fk FOREIGN KEY (iddep) REFERENCES departement(code);
 
 
 -- D3
@@ -115,23 +115,23 @@ CREATE TABLE population (
     nombre_logement_2009 FLOAT,
     nombre_logement_1999 INT,
     nombre_logement_1990 INT,
-    nombre_logement_1982 INT,
+    nombre_logement_1982 FLOAT,
     nombre_logements_vacants_2020 FLOAT,
     nombre_logements_vacants_2014 FLOAT,
     nombre_logements_vacants_2009 FLOAT,
     nombre_logements_vacants_1999 INT,
     nombre_logements_vacants_1990 INT,
-    nombre_logements_vacants_1982 INT,
+    nombre_logements_vacants_1982 FLOAT,
     nombre_deces_1420 INT,
     nombre_deces_0914 INT,
     nombre_deces_9909 INT,
-    nombre_deces_9099 INT,
-    nombre_deces_8290 INT,
+    nombre_deces_9099 FLOAT,
+    nombre_deces_8290 FLOAT,
     nombre_naissance_1420 INT,
     nombre_naissance_0914 INT,
     nombre_naissance_9909 INT,
-    nombre_naissance_9099 INT,
-    nombre_naissance_8290 INT,
+    nombre_naissance_9099 FLOAT,
+    nombre_naissance_8290 FLOAT,
     population_2020 FLOAT,
     population_2014 FLOAT,
     population_2009 FLOAT,
@@ -143,13 +143,13 @@ CREATE TABLE population (
     residence_principale_2009 FLOAT,
     residence_principale_1999 INT,
     residence_principale_1990 INT,
-    residence_principale_1982 INT,
+    residence_principale_1982 FLOAT,
     residence_secondaire_2020 FLOAT,
     residence_secondaire_2014 FLOAT,
     residence_secondaire_2009 FLOAT,
     residence_secondaire_1999 INT,
     residence_secondaire_1990 INT,
-    residence_secondaire_1982 INT
+    residence_secondaire_1982 FLOAT
 );
 
 

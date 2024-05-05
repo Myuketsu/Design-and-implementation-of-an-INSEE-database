@@ -1,0 +1,1 @@
+DROP TABLE if EXISTS region, departement, commune, cheflieuRegion, cheflieuDepartement, mariage, premier_mariage, pays_mariage, population CASCADE;
