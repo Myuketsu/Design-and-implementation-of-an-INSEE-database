@@ -62,7 +62,7 @@ def request_body() -> html.Div:
     df = execute_sql(REQUESTS[0].query)
     return html.Div(
         [
-            dmc.Title(REQUESTS[0].title, order=6, id='request_body_table_title'),
+            dmc.Title(REQUESTS[0].desc, order=6, id='request_body_table_title'),
             DataTable(
                 data=df.to_dict('records'),
                 columns=[{'id': col, 'name': col} for col in df.columns],
@@ -98,6 +98,6 @@ def update_reconstructed_curve(in_request: int) -> tuple:
     data = df.to_dict('records')
     columns = [{'id': col, 'name': col} for col in df.columns]
 
-    title_table = REQUESTS[in_request].title
+    desc_table = REQUESTS[in_request].desc
 
-    return sql_query, data, columns, title_table
+    return sql_query, data, columns, desc_table
