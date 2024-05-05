@@ -66,11 +66,14 @@ def excute_sql_file(file_name: str) -> None:
         execute_sql(sql_file.read())
 
 def copy_to_sql(file: StringIO, table: str, sep: str=',') -> None:
+    columns = file.readline().replace('\r\n', '').split(',')
+
     conn: connection = __POOL.getconn()
     with conn.cursor() as cursor:
         cursor.copy_from(
             file=file,
             table=table,
+            columns=columns,
             sep=sep
         )
         conn.commit()

@@ -21,7 +21,7 @@ def DataFrame_to_buffer(df: pd.DataFrame) -> StringIO:
 
     df.to_csv(
         path_or_buf=buffer,
-        header=False,
+        header=True,
         index=False
     )
 
