@@ -111,6 +111,10 @@ if __name__ == '__main__':
     print('\nAltération des tables', end=' - ')
     timeit(excute_sql_file, f'{PATH_TO_SQL}alter_tables.sql')
 
+    #ALTER TABLES PROCEDUREs
+    print('\nAltération des tables pour la procedure stockee', end=' - ')
+    timeit(excute_sql_file, f'{PATH_TO_SQL}alter_tables_procedure.sql')
+
     # UPDATE TABLES
     print('\nMise à jour des tables', end=' - ')
     timeit(excute_sql_file, f'{PATH_TO_SQL}update_tables.sql')
@@ -119,3 +123,7 @@ if __name__ == '__main__':
     query_file = load_query(f'{PATH_TO_SQL}create_views.toml')
     for item in query_file.values():
         execute_sql(item.get('view_sql'))
+
+    # Création des procédures stockées
+    print('\nCréation des procédures stockees', end=' - ')
+    timeit(excute_sql_file, f'{PATH_TO_SQL}procedure.sql')
