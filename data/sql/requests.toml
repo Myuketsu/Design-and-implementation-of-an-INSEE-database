@@ -9,18 +9,37 @@ GROUP BY iddep, nom
 ORDER BY iddep ASC;"""
 
 [request_1]
-title = ''
-desc = ''
+title = 'Pourcentage de mariés par habitant'
+desc = 'On affiche les départements où le pourcentage de mariés par habitant pour les mariages de type HF-H (mixte) et pour les personnes de 20 à 24 ans.'
 query = """\
-SELECT *
-FROM departement;"""
+SELECT M.type_de_mariage,
+	   M.groupe_age, 
+	   M.nombre_de_maries, 
+	   M.iddep, 
+	   D.nom, 
+	   (SELECT SUM(population_2020) FROM population WHERE iddep = D.code) AS "Population totale",
+	   (M.nombre_de_maries / NULLIF((SELECT SUM(population_2020) FROM population WHERE iddep = D.code), 0)) * 100 AS "Pourcentage de mariés par habitant"
+FROM mariage M
+JOIN departement D ON D.code = M.iddep
+WHERE M.groupe_age = '20_24'
+AND M.type_de_mariage = 'HF-H'"""
 
 [request_2]
-title = ''
-desc = ''
+title = 'Densité population au kilomètre carré'
+desc = 'On affiche la densité de population au kilomètre carré pour chaque département.'
 query = """\
-SELECT *
-FROM commune;"""
+SELECT 
+    d.nom AS nom_departement,
+    SUM(p.superficie) AS superficie_totale,
+    SUM(p.population_2020) AS population_totale,
+    SUM(p.population_2020) / SUM(p.superficie) AS "densite population au kilomètre carré"
+FROM 
+    departement d
+JOIN 
+    population p ON d.code = p.iddep
+GROUP BY 
+    d.nom;
+"""
 
 # REQUETES DE BASE (Celles écrites dans l'énoncé)
 
