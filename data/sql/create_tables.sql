@@ -38,6 +38,18 @@ CREATE TABLE mariage (
     nombre_de_maries INT
 );
 
+-- D2 – État matrimonial antérieur des époux selon le département et la région de mariage. Année 2021
+
+CREATE TABLE etat_matrimonial_anterieur_mariage (
+    id SERIAL PRIMARY KEY,
+    type_de_mariage VARCHAR(5),
+    region_departement VARCHAR(5),
+    sexe VARCHAR(5),
+    etat_matrimonial VARCHAR(1),
+    nombre_de_maries INT
+);
+
+
 -- D3
 CREATE TABLE premier_mariage (
     id SERIAL PRIMARY KEY,
@@ -47,12 +59,32 @@ CREATE TABLE premier_mariage (
     nombre_de_maries INT
 );
 
+-- D4 Nationalité des époux selon le département et la région de domicile conjugal. Année 2021
+
+CREATE TABLE nationalite_epoux (
+    id SERIAL PRIMARY KEY,
+    type_de_mariage VARCHAR(5),
+    region_departement VARCHAR(5),
+    nationalite_combinee VARCHAR(7),
+    nombre_de_maries INT
+);
+
 -- D5
 CREATE TABLE pays_mariage (
     id SERIAL PRIMARY KEY,
     type_de_mariage VARCHAR(2),
     region_departement VARCHAR(5),
     pays_naissance VARCHAR(7),
+    nombre_de_maries INT
+);
+
+-- D6 Répartition mensuelle des mariages selon le département et la région de mariage. Année 2021
+
+CREATE TABLE repartition_mensuelle_mariage (
+    id SERIAL PRIMARY KEY,
+    type_de_mariage VARCHAR(5),
+    region_departement VARCHAR(5),
+    mois_mariage VARCHAR(2),
     nombre_de_maries INT
 );
 

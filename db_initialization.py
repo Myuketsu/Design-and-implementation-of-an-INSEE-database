@@ -2,6 +2,7 @@ from data.db_connector import excute_sql_file, execute_sql, copy_to_sql
 from data.data_processing import select_rename_columns, DataFrame_to_buffer, population_preprocessing
 
 from pandas import read_csv
+import pandas as pd
 
 PATH_TO_SQL = './data/sql/'
 PATH_TO_DATA = './data/raw_data/'
@@ -60,12 +61,29 @@ if __name__ == '__main__':
     df = select_rename_columns(df, table)
     copy_to_sql(DataFrame_to_buffer(df), table)
 
+    file_path, table = f'{PATH_TO_DATA}wedding/Dep2.csv', 'etat_matrimonial_anterieur_mariage'
+    df = read_csv(file_path, sep=';')
+    df = df[~((df['REGDEP_MAR'].str.contains('XX')) | (df['REGDEP_MAR'].str.len() < 4))] # Filtration des données
+    df = select_rename_columns(df, table)
+    copy_to_sql(DataFrame_to_buffer(df), table)
+
+    file_path, table = f'{PATH_TO_DATA}wedding/Dep4.csv', 'nationalite_epoux'
+    df = read_csv(file_path, sep=';')
+    df = df[~((df['REGDEP_DOMI'].str.contains('XX')) | (df['REGDEP_DOMI'].str.len() < 4))] # Filtration des données
+    df = select_rename_columns(df, table)
+    copy_to_sql(DataFrame_to_buffer(df), table)
+
+    file_path, table = f'{PATH_TO_DATA}wedding/Dep6.csv', 'repartition_mensuelle_mariage'
+    df = read_csv(file_path, sep=';')
+    df = df[~((df['REGDEP_MAR'].str.contains('XX')) | (df['REGDEP_MAR'].str.len() < 4))] # Filtration des données
+    df = select_rename_columns(df, table)
+    copy_to_sql(DataFrame_to_buffer(df), table)
+
     # Pour le dossier pop_census
 
     file_path, table = f'{PATH_TO_DATA}pop_census/base-cc-serie-historique-2020.CSV', 'population'
     df = read_csv(file_path, sep=';', dtype='object')
     df = population_preprocessing(df, table)
-    copy_to_sql(DataFrame_to_buffer(df), table)
 
     # ALTER TABLES
     excute_sql_file(f'{PATH_TO_SQL}alter_tables.sql')

@@ -46,6 +46,25 @@ REGDEP_DOMI = 'region_departement'
 LNEPOUX = 'pays_naissance'
 NBMAR = 'nombre_de_maries'
 
+[etat_matrimonial_anterieur_mariage]
+TYPMAR = 'type_de_mariage'
+REGDEP_MAR = 'region_departement'
+SEXE = 'sexe'
+ETAMAT = 'etat_matrimonial'
+NBMARIES = 'nombre_de_maries'
+
+[nationalite_epoux]
+TYPMAR2 = 'type_de_mariage'
+REGDEP_DOMI = 'region_departement'
+NATEPOUX = 'nationalite_combinee'
+NBMAR = 'nombre_de_maries'
+
+[repartition_mensuelle_mariage]
+TYPMAR2 = 'type_de_mariage'
+REGDEP_MAR = 'region_departement'
+MMAR = 'mois_mariage'
+NBMAR = 'nombre_de_maries'
+
 [population]
 CODGEO = 'code_commune'
 SUPERF = 'superficie'
