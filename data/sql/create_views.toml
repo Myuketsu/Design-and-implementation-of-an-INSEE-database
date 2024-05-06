@@ -38,6 +38,7 @@ JOIN (
     WHERE type_statistique = 'résidence secondaire'
 ) residence_secondaire ON residence_secondaire.code_commune = C.code AND residence_secondaire.annee_debut = pop.annee_debut 
 GROUP BY D.code, pop.annee_debut;"""
+desc = 'Visualisation de différent indicateurs (notament la population) des départements pour les différentes années.'
 query = 'SELECT * FROM indicateurs_departement;'
 
 [indicateurs_region]
@@ -81,4 +82,5 @@ JOIN (
     WHERE type_statistique = 'résidence secondaire'
 ) residence_secondaire ON residence_secondaire.code_commune = C.code AND residence_secondaire.annee_debut = pop.annee_debut 
 GROUP BY R.code, pop.annee_debut;"""
+desc = 'Visualisation de différent indicateurs (notament la population) des régions pour les différentes années.'
 query = 'SELECT * FROM indicateurs_region;'
