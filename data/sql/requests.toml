@@ -22,7 +22,7 @@ SELECT M.type_de_mariage,
 FROM mariage M
 JOIN departement D ON D.code = M.iddep
 WHERE M.groupe_age = '20_24'
-AND M.type_de_mariage = 'HF-H'"""
+AND M.type_de_mariage = 'HF-H';"""
 
 [request_2]
 title = 'Densité population au kilomètre carré'

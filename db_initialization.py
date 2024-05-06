@@ -1,5 +1,5 @@
 from data.db_connector import excute_sql_file, execute_sql, copy_to_sql
-from data.data_processing import select_rename_columns, DataFrame_to_buffer
+from data.data_processing import select_rename_columns, DataFrame_to_buffer, population_preprocessing
 
 from pandas import read_csv
 
@@ -64,8 +64,7 @@ if __name__ == '__main__':
 
     file_path, table = f'{PATH_TO_DATA}pop_census/base-cc-serie-historique-2020.CSV', 'population'
     df = read_csv(file_path, sep=';', dtype='object')
-    df = df[~df['CODGEO'].str.startswith('97')]
-    df = select_rename_columns(df, table)
+    df = population_preprocessing(df, table)
     copy_to_sql(DataFrame_to_buffer(df), table)
 
     # ALTER TABLES
