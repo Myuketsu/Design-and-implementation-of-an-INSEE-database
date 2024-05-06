@@ -17,17 +17,43 @@ ORDER BY D.code ASC;"""
 title = 'Pourcentage de mariés par habitant'
 desc = 'On affiche les départements où le pourcentage de mariés par habitant pour les mariages de type HF-H (mixte) et pour les personnes de 20 à 24 ans.'
 query = """\
-SELECT M.type_de_mariage,
-	   M.groupe_age, 
-	   M.nombre_de_maries, 
-	   M.iddep, 
-	   D.nom, 
-	   (SELECT SUM(population_2020) FROM population WHERE iddep = D.code) AS "Population totale",
-	   (M.nombre_de_maries / NULLIF((SELECT SUM(population_2020) FROM population WHERE iddep = D.code), 0)) * 100 AS "Pourcentage de mariés par habitant"
-FROM mariage M
-JOIN departement D ON D.code = M.iddep
-WHERE M.groupe_age = '20_24'
-AND M.type_de_mariage = 'HF-H';"""
+SELECT 
+    M.type_de_mariage,
+    M.groupe_age, 
+    M.nombre_de_maries, 
+    M.iddep, 
+    D.nom AS nom_departement,
+    SUM(S.nbr_pop) AS "Population totale",
+    (M.nombre_de_maries / NULLIF(SUM(S.nbr_pop), 0)) * 100 AS "Pourcentage de mariés par habitant"
+FROM 
+    mariage M
+JOIN 
+    departement D ON D.code = M.iddep
+JOIN (
+    SELECT 
+        SUM(valeur) AS nbr_pop, 
+        code_commune, 
+        D.code AS code_departement,
+        C.nom AS nom_commune, 
+        D.nom AS nom_departement, 
+        D.code
+    FROM 
+        statistiques_pop S
+    JOIN 
+        commune C ON C.code = S.code_commune
+    JOIN 
+        departement D ON D.code = C.code_departement
+    WHERE 
+        type_statistique = 'population' 
+        AND annee_debut = '2020'
+    GROUP BY 
+        code_commune, C.nom, D.nom, D.code
+) AS S ON D.code = S.code_departement
+WHERE 
+    M.groupe_age = '20_24'
+    AND M.type_de_mariage = 'HF-H'
+GROUP BY 
+    M.type_de_mariage, M.groupe_age, M.nombre_de_maries, M.iddep, D.nom;"""
 
 [request_2]
 title = 'Densité population au kilomètre carré'
