@@ -20,6 +20,21 @@ UPDATE pays_mariage
 SET idreg = LEFT(region_departement, 2),
     iddep = RIGHT(region_departement, 2);
 
+-- On coupe les REGDEP_MAR et REGDEP_DOMI pour avoir les codes région et département
+UPDATE etat_matrimonial_anterieur_mariage
+SET idreg = LEFT(region_departement, 2),
+    iddep = RIGHT(region_departement, 2);
+
+-- On coupe les REGDEP_MAR et REGDEP_DOMI pour avoir les codes région et département
+UPDATE nationalite_epoux
+SET idreg = LEFT(region_departement, 2),
+    iddep = RIGHT(region_departement, 2);
+
+-- On coupe les REGDEP_MAR et REGDEP_DOMI pour avoir les codes région et département
+UPDATE repartition_mensuelle_mariage
+SET idreg = LEFT(region_departement, 2),
+    iddep = RIGHT(region_departement, 2);
+
 -- Update table population
 
 UPDATE population
