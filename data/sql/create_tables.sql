@@ -11,7 +11,7 @@ CREATE TABLE departement (
 );
 
 CREATE TABLE commune (
-    code VARCHAR(8) CONSTRAINT commune_key PRIMARY KEY,
+    code VARCHAR(5) CONSTRAINT commune_key PRIMARY KEY,
     nom VARCHAR(200) NOT NULL,
 
     code_departement VARCHAR(8) REFERENCES departement(code)
@@ -88,40 +88,13 @@ CREATE TABLE repartition_mensuelle_mariage (
     nombre_de_maries INT
 );
 
-CREATE TABLE population (
-    id SERIAL PRIMARY KEY,
-    code_commune VARCHAR(10),
+CREATE TABLE statistiques_pop (
+    code_commune VARCHAR(5) REFERENCES commune(code),
     superficie FLOAT,
-    nombre_logement_2020 FLOAT,
-    nombre_logement_2014 FLOAT,
-    nombre_logement_2009 FLOAT,
-    nombre_logement_1999 INT,
-    nombre_logement_1990 INT,
-    nombre_logements_vacants_2020 FLOAT,
-    nombre_logements_vacants_2014 FLOAT,
-    nombre_logements_vacants_2009 FLOAT,
-    nombre_logements_vacants_1999 INT,
-    nombre_logements_vacants_1990 INT,
-    nombre_deces_1420 INT,
-    nombre_deces_0914 INT,
-    nombre_deces_9909 INT,
-    nombre_naissance_1420 INT,
-    nombre_naissance_0914 INT,
-    nombre_naissance_9909 INT,
-    population_2020 FLOAT,
-    population_2014 FLOAT,
-    population_2009 FLOAT,
-    population_2099 INT,
-    population_2090 INT,
-    population_2082 INT,
-    residence_principale_2020 FLOAT,
-    residence_principale_2014 FLOAT,
-    residence_principale_2009 FLOAT,
-    residence_principale_1999 INT,
-    residence_principale_1990 INT,
-    residence_secondaire_2020 FLOAT,
-    residence_secondaire_2014 FLOAT,
-    residence_secondaire_2009 FLOAT,
-    residence_secondaire_1999 INT,
-    residence_secondaire_1990 INT
+    annee_debut VARCHAR(4),
+    annee_fin VARCHAR(4) CONSTRAINT check_annee_fin_sup_annee_debut CHECK (annee_debut <= annee_fin),
+    type_statistique VARCHAR(32),
+    valeur FLOAT,
+
+    PRIMARY KEY (code_commune, type_statistique, annee_debut, annee_fin)
 );

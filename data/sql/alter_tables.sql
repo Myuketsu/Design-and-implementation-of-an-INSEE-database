@@ -40,12 +40,6 @@ ALTER TABLE repartition_mensuelle_mariage
 ADD COLUMN idreg VARCHAR(8),
 ADD COLUMN iddep VARCHAR(8);
 
--- ALTER TABLE population
-
--- On ajoute les colonnes pour les clés étrangères dans la table "population"
-ALTER TABLE population
-ADD COLUMN iddep VARCHAR(8);
-
 
 
 -- Table mariage
@@ -89,8 +83,3 @@ ADD CONSTRAINT mariage_departement_fk FOREIGN KEY (iddep) REFERENCES departement
 ALTER TABLE repartition_mensuelle_mariage
 ADD CONSTRAINT mariage_region_fk FOREIGN KEY (idreg) REFERENCES region(code),
 ADD CONSTRAINT mariage_departement_fk FOREIGN KEY (iddep) REFERENCES departement(code);
-
--- Table population
-
-ALTER TABLE population
-ADD CONSTRAINT population_departement_fk FOREIGN KEY (iddep) REFERENCES departement(code);

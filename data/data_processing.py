@@ -30,7 +30,7 @@ def load_query(file_name: str) -> dict[str, dict[str, Any]]:
     with open(file_name, 'rb') as query_file:
         return tomllib.load(query_file)
     
-def population_preprocessing(df: pd.DataFrame, table: str='population') -> pd.DataFrame:
+def population_preprocessing(df: pd.DataFrame, table: str='statistiques_pop') -> pd.DataFrame:
     population_config = load_config(table)
 
     df = df.copy()[~df['CODGEO'].str.startswith('97')]
@@ -48,7 +48,7 @@ def population_preprocessing(df: pd.DataFrame, table: str='population') -> pd.Da
             pd.DataFrame(
                 {name: df[name] for name in rename_mapper.values()} | {
                     'annee_debut': fields[1],
-                    'annee_fin': None if len(fields) < nbr_max_params else fields[2],
+                    'annee_fin': fields[1] if len(fields) < nbr_max_params else fields[2],
                     'type_statistique': fields[0],
                     'valeur': df[column]
                 }

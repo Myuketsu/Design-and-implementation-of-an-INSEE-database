@@ -8,5 +8,6 @@ premier_mariage,
 pays_mariage, 
 etat_matrimonial_anterieur_mariage, 
 nationalite_epoux, 
-repartition_mensuelle_mariage, 
-population CASCADE;
+repartition_mensuelle_mariage,
+population,
+statistiques_pop CASCADE;

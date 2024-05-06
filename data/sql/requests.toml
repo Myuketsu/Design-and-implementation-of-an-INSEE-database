@@ -2,11 +2,16 @@
 title = 'Population totale par département en 2020'
 desc = 'On affiche la somme de la population de chaque département en 2020.'
 query = """\
-SELECT iddep AS "Code du département", D.nom AS "Département", SUM(population_2020) AS "Population totale"
-FROM population P
-JOIN departement D ON P.iddep = D.code
-GROUP BY iddep, nom
-ORDER BY iddep ASC;"""
+SELECT D.code AS "Code du département", D.nom AS "Département", SUM(valeur) AS "Population totale"
+FROM (
+    SELECT *
+    FROM statistiques_pop
+    WHERE type_statistique = 'population' AND annee_debut = '2020' AND annee_fin = '2020'
+) P
+JOIN commune C ON P.code_commune = C.code 
+JOIN departement D ON C.code_departement = D.code
+GROUP BY D.code, D.nom
+ORDER BY D.code ASC;"""
 
 [request_1]
 title = 'Pourcentage de mariés par habitant'

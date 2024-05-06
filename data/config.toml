@@ -65,7 +65,7 @@ REGDEP_MAR = 'region_departement'
 MMAR = 'mois_mariage'
 NBMAR = 'nombre_de_maries'
 
-[population]
+[statistiques_pop]
 CODGEO = 'code_commune'
 SUPERF = 'superficie'
 P20_LOG = ['nombre logements', '2020']

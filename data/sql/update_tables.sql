@@ -34,8 +34,3 @@ SET idreg = LEFT(region_departement, 2),
 UPDATE repartition_mensuelle_mariage
 SET idreg = LEFT(region_departement, 2),
     iddep = RIGHT(region_departement, 2);
-
--- Update table population
-
-UPDATE population
-SET iddep = LEFT(code_commune, 2);
