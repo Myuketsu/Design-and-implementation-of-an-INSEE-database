@@ -13,9 +13,9 @@ register_page(__name__, path='/views', name='Vues', title='Vues', order=3, icon=
 
 query_file = load_query('./data/sql/create_views.toml')
 
-View = namedtuple('View', ['view_sql', 'query'])
+View = namedtuple('View', ['view_sql', 'desc', 'query'])
 VIEWS: list[View] = [
-    View(item.get('view_sql'), item.get('query'))
+    View(item.get('view_sql'), item.get('desc'), item.get('query'))
     for item in query_file.values()
 ]
 
@@ -66,11 +66,11 @@ def view_body() -> html.Div:
     df = execute_sql(VIEWS[0].query)
     return html.Div(
         [
-            dmc.Title('Résultat de la vue sélectionnée', order=6),
+            dmc.Title(VIEWS[0].desc, order=6, id='view_body_table_title'),
             DataTable(
                 data=df.to_dict('records'),
                 columns=[{'id': col, 'name': col} for col in df.columns],
-                page_size=20,
+                page_size=15,
                 style_table={
                     'border-left': '1px solid rgb(233, 236, 239)',
                     'border-right': '1px solid rgb(233, 236, 239)'
@@ -90,7 +90,8 @@ def view_body() -> html.Div:
         Output('view_selector_SQL_viewer', 'children'),
         Output('view_body_table', 'data'),
         Output('view_body_table', 'columns'),
-        Output('view_body_table', 'page_current')
+        Output('view_body_table', 'page_current'),
+        Output('view_body_table_title', 'children')
     ],
     [
         Input('view_selector', 'value')
@@ -102,4 +103,6 @@ def update_reconstructed_curve(in_request: int) -> tuple:
     data = df.to_dict('records')
     columns = [{'id': col, 'name': col} for col in df.columns]
 
-    return sql_query, data, columns, 0
+    desc_table = VIEWS[in_request].desc
+
+    return sql_query, data, columns, 0, desc_table

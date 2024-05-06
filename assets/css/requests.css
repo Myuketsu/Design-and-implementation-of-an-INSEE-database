@@ -21,6 +21,8 @@
 
 #request_selector_SQL_viewer {
     width: 100%;
+    overflow: auto;
+    max-height: 250px;
 }
 
 #request_selector_SQL_viewer > * {
