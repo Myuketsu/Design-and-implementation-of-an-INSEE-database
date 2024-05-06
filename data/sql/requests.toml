@@ -2,15 +2,18 @@
 title = 'Population totale par département en 2020'
 desc = 'On affiche la somme de la population de chaque département en 2020.'
 query = """\
-SELECT D.code AS "Code du département", D.nom AS "Département", SUM(valeur) AS "Population totale"
-FROM (
-    SELECT *
-    FROM statistiques_pop
-    WHERE type_statistique = 'population' AND annee_debut = '2020' AND annee_fin = '2020'
-) P
+SELECT 
+    D.code AS "Code du département", 
+    D.nom AS "Département", 
+    SUM(valeur) AS "Population totale" 
+FROM ( 
+    SELECT * 
+    FROM statistiques_pop 
+    WHERE type_statistique = 'population' AND annee_debut = '2020' AND annee_fin = '2020' 
+) P 
 JOIN commune C ON P.code_commune = C.code 
-JOIN departement D ON C.code_departement = D.code
-GROUP BY D.code, D.nom
+JOIN departement D ON C.code_departement = D.code 
+GROUP BY D.code, D.nom 
 ORDER BY D.code ASC;"""
 
 [request_1]
@@ -18,51 +21,40 @@ title = 'Pourcentage de mariés par habitant'
 desc = 'On affiche les départements où le pourcentage de mariés par habitant pour les mariages de type HF-H (mixte) et pour les personnes de 20 à 24 ans.'
 query = """\
 SELECT 
-    M.type_de_mariage,
+    M.type_de_mariage, 
     M.groupe_age, 
     M.nombre_de_maries, 
     M.iddep, 
-    D.nom AS nom_departement,
-    SUM(S.nbr_pop) AS "Population totale",
-    (M.nombre_de_maries / NULLIF(SUM(S.nbr_pop), 0)) * 100 AS "Pourcentage de mariés par habitant"
-FROM 
-    mariage M
-JOIN 
-    departement D ON D.code = M.iddep
+    D.nom AS nom_departement, 
+    SUM(S.nbr_pop) AS "Population totale", 
+    (M.nombre_de_maries / NULLIF(SUM(S.nbr_pop), 0)) * 100 AS "Pourcentage de mariés par habitant" 
+FROM mariage M 
+JOIN departement D ON D.code = M.iddep 
 JOIN (
     SELECT 
         SUM(valeur) AS nbr_pop, 
         code_commune, 
-        D.code AS code_departement,
+        D.code AS code_departement, 
         C.nom AS nom_commune, 
         D.nom AS nom_departement, 
         D.code
-    FROM 
-        statistiques_pop S
-    JOIN 
-        commune C ON C.code = S.code_commune
-    JOIN 
-        departement D ON D.code = C.code_departement
-    WHERE 
-        type_statistique = 'population' 
-        AND annee_debut = '2020'
-    GROUP BY 
-        code_commune, C.nom, D.nom, D.code
-) AS S ON D.code = S.code_departement
-WHERE 
-    M.groupe_age = '20_24'
-    AND M.type_de_mariage = 'HF-H'
-GROUP BY 
-    M.type_de_mariage, M.groupe_age, M.nombre_de_maries, M.iddep, D.nom;"""
+    FROM statistiques_pop S 
+    JOIN commune C ON C.code = S.code_commune 
+    JOIN departement D ON D.code = C.code_departement 
+    WHERE type_statistique = 'population' AND annee_debut = '2020'
+    GROUP BY code_commune, C.nom, D.nom, D.code
+) S ON D.code = S.code_departement
+WHERE M.groupe_age = '20_24' AND M.type_de_mariage = 'HF-H'
+GROUP BY M.type_de_mariage, M.groupe_age, M.nombre_de_maries, M.iddep, D.nom;"""
 
 [request_2]
 title = 'Densité population au kilomètre carré'
 desc = 'On affiche la densité de population au kilomètre carré pour chaque département.'
 query = """\
 SELECT 
-    D.nom AS nom_departement,
-    SUM(P.superficie) AS superficie_totale,
-    SUM(P.valeur) AS population_totale,
+    D.nom AS nom_departement, 
+    SUM(P.superficie) AS superficie_totale, 
+    SUM(P.valeur) AS population_totale, 
     SUM(P.valeur) / SUM(P.superficie) AS "densité population au kilomètre carré"
 FROM (
     SELECT *
@@ -71,8 +63,7 @@ FROM (
 ) P
 JOIN commune C ON P.code_commune = C.code 
 JOIN departement D ON C.code_departement = D.code
-GROUP BY D.nom;
-"""
+GROUP BY D.nom;"""
 
 # REQUETES DE BASE (Celles écrites dans l'énoncé)
 
@@ -80,7 +71,9 @@ GROUP BY D.nom;
 title = "Départements d'Auvergne-Rhône-Alpes"
 desc = 'On affiche la liste des départements de la région Auvergne-Rhône-Alpes.'
 query = """\
-SELECT D.code AS "Code du département", D.nom AS "Nom des départements"
+SELECT 
+    D.code AS "Code du département", 
+    D.nom AS "Nom des départements"
 FROM departement D
 JOIN region R ON D.code_region = R.code
 WHERE R.nom = 'Auvergne-Rhône-Alpes';"""
@@ -89,7 +82,9 @@ WHERE R.nom = 'Auvergne-Rhône-Alpes';"""
 title = 'Communes de plus de 20 000 habitants en Gironde en 2020'
 desc = "On affiche la liste des communes de plus de 20 000 habitants de la Gironde en 2020 dans l'ordre décroissant."
 query = """\
-SELECT C.nom AS "Nom de la commune", P.valeur AS "Nombre de personne habitant la commune" 
+SELECT 
+    C.nom AS "Nom de la commune", 
+    P.valeur AS "Nombre de personne habitant la commune" 
 FROM (
     SELECT *
     FROM statistiques_pop
@@ -103,7 +98,9 @@ ORDER BY P.valeur DESC;"""
 title = 'Région la plus peuplée en 2020'
 desc = 'On affiche la région la plus peuplée en 2020.'
 query = """\
-SELECT R.nom AS "Nom de la région", SUM(P.valeur) AS "Population totale"
+SELECT 
+    R.nom AS "Nom de la région", 
+    SUM(P.valeur) AS "Population totale"
 FROM (
     SELECT *
     FROM statistiques_pop
@@ -122,7 +119,8 @@ LIMIT 1;"""
 title = 'Départements de la région Grand Est'
 desc = 'On affiche la liste des départements de la région Grand Est.'
 query = """\
-SELECT D.nom AS "Nom des départements"
+SELECT 
+    D.nom AS "Nom des départements"
 FROM departement D
 JOIN region R ON D.code_region = R.code
 WHERE R.nom = 'Grand Est';"""
@@ -131,7 +129,9 @@ WHERE R.nom = 'Grand Est';"""
 title = 'Départements avec nouveaux mariés'
 desc = 'On affiche la liste des départements qui comptent au moins 10 nouveaux mariés de type HF-H (mixte).'
 query = """\
-SELECT D.nom, PM.type_de_mariage, PM.nombre_de_maries
+SELECT 
+    D.nom, PM.type_de_mariage, 
+    PM.nombre_de_maries
 FROM departement D
 JOIN premier_mariage PM ON D.code = PM.iddep
 WHERE type_de_mariage = 'HF-H' AND PM.nombre_de_maries >= 300;"""

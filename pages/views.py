@@ -70,7 +70,7 @@ def view_body() -> html.Div:
             DataTable(
                 data=df.to_dict('records'),
                 columns=[{'id': col, 'name': col} for col in df.columns],
-                page_size=20,
+                page_size=15,
                 style_table={
                     'border-left': '1px solid rgb(233, 236, 239)',
                     'border-right': '1px solid rgb(233, 236, 239)'

@@ -21,6 +21,8 @@
 
 #view_selector_SQL_viewer {
     width: 100%;
+    overflow: auto;
+    max-height: 250px;
 }
 
 #view_selector_SQL_viewer > * {
@@ -44,7 +46,7 @@
 }
 
 #view_selector_box {
-    width: 25%;
+    width: 15%;
 }
 
 #view_selector {
