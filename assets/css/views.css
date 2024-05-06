@@ -44,3 +44,11 @@
     overflow-y: auto;
     overflow-x: hidden;
 }
+
+#view_selector_box {
+    width: 25%;
+}
+
+#view_selector {
+    width: 100%;
+}

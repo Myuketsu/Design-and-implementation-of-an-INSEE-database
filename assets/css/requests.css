@@ -16,7 +16,7 @@
 }
 
 #request_selector_SQL {
-    width: 80%;
+    width: 68%;
 }
 
 #request_selector_SQL_viewer {
@@ -42,4 +42,12 @@
     flex-grow: 1;
     overflow-y: auto;
     overflow-x: hidden;
+}
+
+#request_selector_box {
+    width: 25%;
+}
+
+#request_selector {
+    width: 100%;
 }
