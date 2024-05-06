@@ -1,15 +1,84 @@
-[pop_departement]
+[indicateurs_departement]
 view_sql = """\
-CREATE VIEW pop_departement AS
-SELECT  
-FROM  
-WHERE  ;"""
-query = 'SELECT * FROM pop_departement;'
+CREATE VIEW indicateurs_departement AS
+SELECT 
+    D.code AS "Code", 
+    D.nom AS "Département", 
+    pop.annee_debut AS "Année", 
+    SUM(pop.valeur) AS "Population totale",
+    SUM(logements.valeur) AS "Logements",
+    SUM(logements_vacants.valeur) AS "Logements vacants",
+    SUM(residence_principale.valeur) AS "Résidence principales",
+    SUM(residence_secondaire.valeur) AS "Résidence secondaire"
+FROM commune C
+JOIN departement D ON C.code_departement = D.code
+JOIN (
+    SELECT code_commune, annee_debut, valeur 
+    FROM statistiques_pop
+    WHERE type_statistique = 'population'
+) pop ON pop.code_commune = C.code
+JOIN (
+    SELECT code_commune, annee_debut, valeur 
+    FROM statistiques_pop
+    WHERE type_statistique = 'nombre logements'
+) logements ON logements.code_commune = C.code AND logements.annee_debut = pop.annee_debut 
+JOIN (
+    SELECT code_commune, annee_debut, valeur 
+    FROM statistiques_pop
+    WHERE type_statistique = 'nombre logements vacants'
+) logements_vacants ON logements_vacants.code_commune = C.code AND logements_vacants.annee_debut = pop.annee_debut 
+JOIN (
+    SELECT code_commune, annee_debut, valeur 
+    FROM statistiques_pop
+    WHERE type_statistique = 'résidence principale'
+) residence_principale ON residence_principale.code_commune = C.code AND residence_principale.annee_debut = pop.annee_debut 
+JOIN (
+    SELECT code_commune, annee_debut, valeur 
+    FROM statistiques_pop
+    WHERE type_statistique = 'résidence secondaire'
+) residence_secondaire ON residence_secondaire.code_commune = C.code AND residence_secondaire.annee_debut = pop.annee_debut 
+GROUP BY D.code, pop.annee_debut;"""
+query = 'SELECT * FROM indicateurs_departement;'
 
-[pop_region]
+[indicateurs_region]
 view_sql = """\
-CREATE VIEW pop_region AS
-SELECT  
-FROM  
-WHERE  ;"""
-query = 'SELECT * FROM pop_region;'
+CREATE VIEW indicateurs_region AS
+SELECT 
+    R.code AS "Code", 
+    R.nom AS "Région", 
+    pop.annee_debut AS "Année", 
+    SUM(pop.valeur) AS "Population totale",
+    SUM(logements.valeur) AS "Logements",
+    SUM(logements_vacants.valeur) AS "Logements vacants",
+    SUM(residence_principale.valeur) AS "Résidence principales",
+    SUM(residence_secondaire.valeur) AS "Résidence secondaire"
+FROM commune C
+JOIN departement D ON C.code_departement = D.code
+JOIN region R ON D.code_region = R.code
+JOIN (
+    SELECT code_commune, annee_debut, valeur 
+    FROM statistiques_pop
+    WHERE type_statistique = 'population'
+) pop ON pop.code_commune = C.code
+JOIN (
+    SELECT code_commune, annee_debut, valeur 
+    FROM statistiques_pop
+    WHERE type_statistique = 'nombre logements'
+) logements ON logements.code_commune = C.code AND logements.annee_debut = pop.annee_debut 
+JOIN (
+    SELECT code_commune, annee_debut, valeur 
+    FROM statistiques_pop
+    WHERE type_statistique = 'nombre logements vacants'
+) logements_vacants ON logements_vacants.code_commune = C.code AND logements_vacants.annee_debut = pop.annee_debut 
+JOIN (
+    SELECT code_commune, annee_debut, valeur 
+    FROM statistiques_pop
+    WHERE type_statistique = 'résidence principale'
+) residence_principale ON residence_principale.code_commune = C.code AND residence_principale.annee_debut = pop.annee_debut 
+JOIN (
+    SELECT code_commune, annee_debut, valeur 
+    FROM statistiques_pop
+    WHERE type_statistique = 'résidence secondaire'
+) residence_secondaire ON residence_secondaire.code_commune = C.code AND residence_secondaire.annee_debut = pop.annee_debut 
+GROUP BY R.code, pop.annee_debut;"""
+query = 'SELECT * FROM indicateurs_region;'

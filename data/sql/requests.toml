@@ -34,16 +34,18 @@ title = 'Densité population au kilomètre carré'
 desc = 'On affiche la densité de population au kilomètre carré pour chaque département.'
 query = """\
 SELECT 
-    d.nom AS nom_departement,
-    SUM(p.superficie) AS superficie_totale,
-    SUM(p.population_2020) AS population_totale,
-    SUM(p.population_2020) / SUM(p.superficie) AS "densite population au kilomètre carré"
-FROM 
-    departement d
-JOIN 
-    population p ON d.code = p.iddep
-GROUP BY 
-    d.nom;
+    D.nom AS nom_departement,
+    SUM(P.superficie) AS superficie_totale,
+    SUM(P.valeur) AS population_totale,
+    SUM(P.valeur) / SUM(P.superficie) AS "densité population au kilomètre carré"
+FROM (
+    SELECT *
+    FROM statistiques_pop
+    WHERE type_statistique = 'population' AND annee_debut = '2020' AND annee_fin = '2020'
+) P
+JOIN commune C ON P.code_commune = C.code 
+JOIN departement D ON C.code_departement = D.code
+GROUP BY D.nom;
 """
 
 # REQUETES DE BASE (Celles écrites dans l'énoncé)
@@ -58,26 +60,34 @@ JOIN region R ON D.code_region = R.code
 WHERE R.nom = 'Auvergne-Rhône-Alpes';"""
 
 [request_4]
-title = 'Communes de plus de 20 000 habitants en Gironde'
-desc = "On affiche la liste des communes de plus de 20 000 habitants de la Gironde dans l'ordre décroissant."
+title = 'Communes de plus de 20 000 habitants en Gironde en 2020'
+desc = "On affiche la liste des communes de plus de 20 000 habitants de la Gironde en 2020 dans l'ordre décroissant."
 query = """\
-SELECT c.nom AS "Nom de la commune", P.population_2020 AS "Nombre de personne habitant la commune"
-FROM commune C
-JOIN departement D ON C.code_departement = D.code
-JOIN population P ON P.code_commune = C.code
-WHERE P.population_2020 >= 20000 AND c.code_departement = '33'
-ORDER BY P.population_2020 DESC;"""
+SELECT C.nom AS "Nom de la commune", P.valeur AS "Nombre de personne habitant la commune" 
+FROM (
+    SELECT *
+    FROM statistiques_pop
+    WHERE type_statistique = 'population' AND annee_debut = '2020' AND annee_fin = '2020'
+) P
+JOIN commune C ON P.code_commune = C.code 
+WHERE P.valeur >= 20000 AND C.code_departement = '33'
+ORDER BY P.valeur DESC;"""
 
 [request_5]
-title = 'Région la plus peuplée'
-desc = 'On affiche la région la plus peuplée.'
+title = 'Région la plus peuplée en 2020'
+desc = 'On affiche la région la plus peuplée en 2020.'
 query = """\
-SELECT R.nom AS "Nom de la région", SUM(P.population_2020) AS "Population totale"
-FROM region R
-JOIN departement D ON R.code = D.code_region
-JOIN population P ON P.iddep = D.code
+SELECT R.nom AS "Nom de la région", SUM(P.valeur) AS "Population totale"
+FROM (
+    SELECT *
+    FROM statistiques_pop
+    WHERE type_statistique = 'population' AND annee_debut = '2020' AND annee_fin = '2020'
+) P
+JOIN commune C ON P.code_commune = C.code 
+JOIN departement D ON C.code_departement = D.code
+JOIN region R ON D.code_region = R.code
 GROUP BY R.nom
-ORDER BY SUM(P.population_2020) DESC
+ORDER BY SUM(P.valeur) DESC
 LIMIT 1;"""
 
 # REQUETES FREESTYLE

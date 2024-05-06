@@ -71,7 +71,7 @@ def request_body() -> html.Div:
             DataTable(
                 data=df.to_dict('records'),
                 columns=[{'id': col, 'name': col} for col in df.columns],
-                page_size=19,
+                page_size=20,
                 style_table={
                     'border-left': '1px solid rgb(233, 236, 239)',
                     'border-right': '1px solid rgb(233, 236, 239)'
@@ -91,6 +91,7 @@ def request_body() -> html.Div:
         Output('request_selector_SQL_viewer', 'children'),
         Output('request_body_table', 'data'),
         Output('request_body_table', 'columns'),
+        Output('request_body_table', 'page_current'),
         Output('request_body_table_title', 'children')
     ],
     [
@@ -105,4 +106,4 @@ def update_reconstructed_curve(in_request: int) -> tuple:
 
     desc_table = REQUESTS[in_request].desc
 
-    return sql_query, data, columns, desc_table
+    return sql_query, data, columns, 0, desc_table

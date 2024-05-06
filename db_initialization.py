@@ -1,5 +1,5 @@
-from data.db_connector import excute_sql_file, copy_to_sql
-from data.data_processing import select_rename_columns, DataFrame_to_buffer, population_preprocessing
+from data.db_connector import excute_sql_file, copy_to_sql, execute_sql
+from data.data_processing import select_rename_columns, DataFrame_to_buffer, population_preprocessing, load_query
 
 from pandas import read_csv
 from time import perf_counter
@@ -114,3 +114,8 @@ if __name__ == '__main__':
     # UPDATE TABLES
     print('\nMise à jour des tables', end=' - ')
     timeit(excute_sql_file, f'{PATH_TO_SQL}update_tables.sql')
+
+    # Création des vues
+    query_file = load_query(f'{PATH_TO_SQL}create_views.toml')
+    for item in query_file.values():
+        execute_sql(item.get('view_sql'))
