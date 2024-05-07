@@ -1,0 +1,55 @@
+#explains_layout {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+}
+
+#explain_selector_body {
+    display: flex;
+
+    justify-content: space-evenly;
+    align-items: center;
+
+    padding: 8px;
+
+    border-bottom: solid rgb(233, 236, 239) 1px;;
+}
+
+#explain_selector_SQL {
+    width: 68%;
+}
+
+#explain_selector_SQL_viewer {
+    width: 100%;
+    overflow: auto;
+    max-height: 250px;
+}
+
+#explain_selector_SQL_viewer > * {
+    overflow: hidden !important;
+}
+
+#explain_selector_SQL_viewer .mantine-ScrollArea-scrollbar {
+    display: none;
+}
+
+#explain_body {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 36px;
+    overflow: auto;
+}
+
+#explain_body_table {
+    flex-grow: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#explain_selector_box {
+    width: 25%;
+}
+
+#explain_selector {
+    width: 100%;
+}
