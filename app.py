@@ -39,7 +39,7 @@ app.layout = html.Div(
             style={
                 'marginTop': header_height,
                 'marginLeft': sidebar_base_width,
-                'maxWidth': f'calc(100% - {sidebar_base_width}px)',
+                'width': f'calc(100% - {sidebar_base_width}px)',
                 'height': f'calc(100vh - {header_height}px)'
             }
         )

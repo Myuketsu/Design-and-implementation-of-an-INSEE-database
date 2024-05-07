@@ -3,7 +3,8 @@ import dash_mantine_components as dmc
 from dash_iconify import DashIconify
 
 CATEGORIES = {
-    'Requêtes': {'icon': 'bi:database-down'}
+    'Triggers': {'icon': 'streamline:database-setting'},
+    'Plan d\'exécution': {'icon': 'material-symbols:format-list-numbered'}
 }
 
 def get_icon(icon: str, height: int=20, color: str='#343a40') -> DashIconify:
@@ -27,8 +28,8 @@ def get_category(label: str, children: list[dmc.NavLink]) -> dmc.NavLink:
     )
 
 def get_sidebar(base_width: int) -> dmc.Navbar:
-    nav_links: list[dmc.NavLink] = []
-    categories: dict[str, list[dmc.NavLink]] = {}
+    nav_links: dict[int, dmc.NavLink] = {}
+    categories: dict[str, list[tuple[dmc.NavLink, int]]] = {}
 
     for page in page_registry.values():
         if page.get('category_name') is not None:
@@ -37,19 +38,22 @@ def get_sidebar(base_width: int) -> dmc.Navbar:
                 categories[page.get('category_name')] = []
             
             categories[page.get('category_name')].append(
-                get_nav_link(page.get('name'), page.get('path'), page.get('icon'))
+                (get_nav_link(page.get('name'), page.get('path'), page.get('icon')), page.get('order'))
             )
             continue
 
-        nav_links.append(
-            get_nav_link(page.get('name'), page.get('path'), page.get('icon'))
-        )
+        nav_links[page.get('order')] = get_nav_link(page.get('name'), page.get('path'), page.get('icon'))
+
     
     for category_name, values in categories.items():
-        nav_links.append(get_category(category_name, values))
+        categorie_links = [value[0] for value in values]
+        orders_links = [value[1] for value in values]
+        nav_links[min(orders_links)] = get_category(category_name, categorie_links)
+
+    children = [nav_link[1] for nav_link in sorted(nav_links.items())]
 
     return dmc.Navbar(
-        children=nav_links,
+        children=children,
         id='sidebar',
         fixed=True,
         width={'base': base_width},

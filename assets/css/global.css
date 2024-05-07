@@ -6,6 +6,10 @@ body {
     margin: 0;
 }
 
+#layout {
+    width: 100vw;
+}
+
 #app_title {
     display: flex;
     align-items: center;
@@ -25,4 +29,12 @@ body {
 
 .previous-next-container {
     text-align: left !important;
+}
+
+.mantine-Prism-code.prism-code.language-sql {
+    padding: 0 16px;
+}
+
+.mantine-Prism-line.token-line {
+    padding: 0;
 }
