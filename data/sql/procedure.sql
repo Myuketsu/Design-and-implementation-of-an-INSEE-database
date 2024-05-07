@@ -43,3 +43,5 @@ BEGIN
     WHERE R.code = S.code_region;
 END;
 $$ LANGUAGE plpgsql;
+
+CALL update_population();
