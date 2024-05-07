@@ -10,9 +10,9 @@ def layout():
                 dmc.Prism(
                     triggers.read(),
                     language='sql',
-                    withLineNumbers=True,
-                    id='triggers_SQL_viewer'
+                    withLineNumbers=True
                 )
             ],
-            id='triggers_layout'
+            id='triggers_layout',
+            className='layout_code_highlight'
         )

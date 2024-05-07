@@ -27,12 +27,14 @@ if __name__ == '__main__':
     print('\nDossier area\nCopy region', end=' - ')
     file_path, table = f'{PATH_TO_DATA}area/v_region_2023.csv', 'region'
     df = read_csv(file_path)
+    df = df[df['CHEFLIEU'].map(lambda x: int(x) < 97000 if x.isnumeric() else True)]
     df = select_rename_columns(df, table)
     timeit(copy_to_sql, DataFrame_to_buffer(df), table)
 
     print('Copy departement', end=' - ')
     file_path, table = f'{PATH_TO_DATA}area/v_departement_2023.csv', 'departement'
     df = read_csv(file_path)
+    df = df[df['DEP'].map(len) < 3]
     df = select_rename_columns(df, table)
     timeit(copy_to_sql, DataFrame_to_buffer(df), table)
 
@@ -40,18 +42,21 @@ if __name__ == '__main__':
     file_path, table = f'{PATH_TO_DATA}area/v_commune_2023.csv', 'commune'
     df = read_csv(file_path) # Lecture du fichier CSV
     df = df[df['TYPECOM'].isin(['COM', 'ARM'])] # Filtration des données
+    df = df[df['COM'].map(lambda x: int(x) < 97000 if x.isnumeric() else True)]
     df = select_rename_columns(df, table) # Sélection et renommage des colonnes d'intérêts
     timeit(copy_to_sql, DataFrame_to_buffer(df), table) # Envoie par COPY des données à la BD
 
     print('Copy cheflieuregion', end=' - ')
     file_path, table = f'{PATH_TO_DATA}area/v_region_2023.csv', 'cheflieuregion'
     df = read_csv(file_path)
+    df = df[df['CHEFLIEU'].map(lambda x: int(x) < 97000 if x.isnumeric() else True)]
     df = select_rename_columns(df, table)
     timeit(copy_to_sql, DataFrame_to_buffer(df), table)
 
     print('Copy cheflieudepartement', end=' - ')
     file_path, table = f'{PATH_TO_DATA}area/v_departement_2023.csv', 'cheflieudepartement'
     df = read_csv(file_path)
+    df = df[df['DEP'].map(len) < 3]
     df = select_rename_columns(df, table)
     timeit(copy_to_sql, DataFrame_to_buffer(df), table)
 
@@ -111,19 +116,17 @@ if __name__ == '__main__':
     print('\nAltération des tables', end=' - ')
     timeit(excute_sql_file, f'{PATH_TO_SQL}alter_tables.sql')
 
-    #ALTER TABLES PROCEDUREs
-    print('\nAltération des tables pour la procedure stockee', end=' - ')
-    timeit(excute_sql_file, f'{PATH_TO_SQL}alter_tables_procedure.sql')
-
     # UPDATE TABLES
     print('\nMise à jour des tables', end=' - ')
     timeit(excute_sql_file, f'{PATH_TO_SQL}update_tables.sql')
 
     # Création des vues
+    print('\nCréation des vues')
     query_file = load_query(f'{PATH_TO_SQL}create_views.toml')
-    for item in query_file.values():
-        execute_sql(item.get('view_sql'))
+    for view, item in query_file.items():
+        print(f'Vue : {view}', end=' - ')
+        timeit(execute_sql, item.get('view_sql'))
 
-    # Création des procédures stockées
-    print('\nCréation des procédures stockees', end=' - ')
+    #PROCEDURE
+    print('\nProcedure stockée', end=' - ')
     timeit(excute_sql_file, f'{PATH_TO_SQL}procedure.sql')
