@@ -6,12 +6,11 @@ import dash_mantine_components as dmc
 from collections import namedtuple
 
 from data.db_connector import execute_sql
-from data.data_processing import load_query
-from view.figure import create_table
+from data.data_processing import SQL_PATH, load_query
 
 register_page(__name__, path='/views', name='Vues', title='Vues', order=3, icon='carbon:data-view')
 
-query_file = load_query('./data/sql/create_views.toml')
+query_file = load_query(f'{SQL_PATH}create_views.toml')
 
 View = namedtuple('View', ['view_sql', 'desc', 'query'])
 VIEWS: list[View] = [

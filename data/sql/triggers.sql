@@ -47,10 +47,8 @@ BEFORE DELETE ON region
 FOR EACH STATEMENT
 EXECUTE FUNCTION prevenir_modification_region();
 
--- Triggers pour pour mettre à jour la population d'un département et d'une région quand la population d'une commune est mise à jour.
-CREATE OR REPLACE TRIGGER population_update_departement_region
-AFTER UPDATE ON commune
+-- Trigger pour mettre à jour la population d'un département ou d'une région lorsque la population d'une commune est mise à jour
+CREATE OR REPLACE TRIGGER update_population_dep_reg
+AFTER UPDATE ON statistiques_pop
 FOR EACH STATEMENT
-BEGIN
-    CALL update_population();
-END;
+EXECUTE PROCEDURE update_population();

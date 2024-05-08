@@ -1,5 +1,6 @@
 from psycopg2.pool import SimpleConnectionPool
 from psycopg2.extensions import connection
+from psycopg2.pool import PoolError
 
 from pandas import DataFrame
 
@@ -45,20 +46,29 @@ def execute_sql(query: str, vars: tuple | list | dict=None) -> DataFrame | None:
         >>> execute_sql('INSERT INTO table (colonne1, colonne2) VALUES (%s, %s);', (valeur1, valeur2))
         ...
     """
-    conn: connection = __POOL.getconn()
-    with conn.cursor() as cursor:
-        cursor.execute(query, tuple() if vars is None else vars)
+    try:
+        conn: connection = __POOL.getconn()
+    except PoolError as e:
+        print(e.pgerror)
+        return None
+    
+    query_result = None
+    try:
+        with conn.cursor() as cursor:
+            cursor.execute(query, tuple() if vars is None else vars)
 
-        if cursor.description is None:
-            conn.commit()
-            query_result = None
-        else:
-            query_result = DataFrame(
-                data=cursor.fetchall(),
-                columns=[column.name for column in cursor.description]
-            )
-
-    __POOL.putconn(conn)
+            if cursor.description is None:
+                conn.commit()
+            else:
+                query_result = DataFrame(
+                    data=cursor.fetchall(),
+                    columns=[column.name for column in cursor.description]
+                )
+    except Exception as e: # On ne gère pas l'erreur ici !
+        print(f'Une erreur est survenue lors de la requête.\nSQL : {query.replace('\n', ' ')}')
+        raise e
+    finally: # On redonne la connexion dans tout les cas
+        __POOL.putconn(conn)
     return query_result
 
 def excute_sql_file(file_name: str) -> None:

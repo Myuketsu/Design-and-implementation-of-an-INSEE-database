@@ -6,11 +6,11 @@ import dash_mantine_components as dmc
 from collections import namedtuple
 
 from data.db_connector import execute_sql
-from data.data_processing import load_query
+from data.data_processing import SQL_PATH, load_query
 
 register_page(__name__, path='/requests', name='Requêtes', title='Requêtes', order=2, icon='bi:database-down')
 
-query_file = load_query('./data/sql/requests.toml')
+query_file = load_query(f'{SQL_PATH}requests.toml')
 
 Request = namedtuple('Request', ['title', 'desc', 'query'])
 REQUESTS: list[Request] = [

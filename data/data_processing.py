@@ -5,6 +5,7 @@ from io import StringIO
 from typing import Any
 
 CONFIG_PATH = './data/config.toml'
+SQL_PATH = './data/sql/'
 
 def load_config(section_name: str) -> dict[str, Any]:
     with open(CONFIG_PATH, 'rb') as config_file:
@@ -56,3 +57,7 @@ def population_preprocessing(df: pd.DataFrame, table: str='statistiques_pop') ->
         )
 
     return pd.concat(temp_dfs, ignore_index=True)
+
+def get_file_content(file_name: str) -> str:
+    with open(file_name, 'r', encoding='utf-8') as file:
+        return file.read()

@@ -1,0 +1,41 @@
+#triggers_layout {
+    display: flex;
+}
+
+#triggers_control_and_result_side {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    row-gap: 40px;
+}
+
+#triggers_code_box_box {
+    overflow: auto;
+    width: 60%;
+    max-height: calc(100vh - 70px);
+}
+
+#triggers_controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid rgb(233, 236, 239);
+    padding: 5px;
+    row-gap: 20px;
+    border-radius: 15px;
+}
+
+#triggers_buttons_groups {
+    display: flex;
+    column-gap: 10px;
+}
+
+#triggers_result_table {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgb(233, 236, 239);
+    border-radius: 15px;
+    row-gap: 10px;
+    padding: 15px;
+}

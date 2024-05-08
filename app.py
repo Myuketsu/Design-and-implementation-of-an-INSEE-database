@@ -29,23 +29,26 @@ def get_header(height: int) -> dmc.Header:
 header_height: int = 70
 sidebar_base_width: int = 72
 
-app.layout = html.Div(
-    [
-        get_header(header_height),
-        get_sidebar(sidebar_base_width),
-        html.Div(
-            page_container.children,
-            id='page_content',
-            style={
-                'marginTop': header_height,
-                'marginLeft': sidebar_base_width,
-                'width': f'calc(100% - {sidebar_base_width}px)',
-                'height': f'calc(100vh - {header_height}px)'
-            }
-        )
-    ],
-    id='layout'
+app.layout = dmc.NotificationsProvider(
+    html.Div(
+        [
+            get_header(header_height),
+            get_sidebar(sidebar_base_width),
+            html.Div(
+                page_container.children,
+                id='page_content',
+                style={
+                    'marginTop': header_height,
+                    'marginLeft': sidebar_base_width,
+                    'width': f'calc(100% - {sidebar_base_width}px)',
+                    'height': f'calc(100vh - {header_height}px)'
+                }
+            )
+        ],
+        id='layout'
+    )
 )
+
 
 if __name__ == '__main__':
     app.run(debug=True)
