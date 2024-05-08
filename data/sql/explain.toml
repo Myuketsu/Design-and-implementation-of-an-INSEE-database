@@ -1,0 +1,105 @@
+[request_0]
+title = 'EXPLAIN de la requête : Départements avec nouveaux mariés'
+desc = "Voici le plan d'exécution de la requête qui permet de lister des départements qui comptent au moins 10 nouveaux mariés de type HF-H (mixte)."
+query = """\
+EXPLAIN 
+SELECT 
+    D.nom, PM.type_de_mariage, 
+    PM.nombre_de_maries
+FROM departement D
+JOIN premier_mariage PM ON D.code = PM.iddep
+WHERE type_de_mariage = 'HF-H' AND PM.nombre_de_maries >= 300;"""
+explain = """
+Ceci est un autre plan d'exécution détaillé d'une requête SQL généré par PostgreSQL. Voici une description de chaque partie du plan :
+
+1. **Hash Join** :
+   - Cette partie du plan utilise une jointure de hachage pour fusionner les résultats de deux balayages séquentiels.
+   - Coût estimé : entre 3.16 et 103.37.
+   - Nombre de lignes estimé : 136.
+   - Largeur de la sortie : 18 colonnes.
+   - Conditions de jointure : La jointure est effectuée sur les codes de département (`pm.iddep` et `d.code`).
+   
+2. **Seq Scan on premier_mariage** :
+   - Cette partie du plan effectue un balayage séquentiel de la table `premier_mariage`.
+   - Coût estimé : entre 0.00 et 99.84.
+   - Nombre de lignes estimé : 136.
+   - Largeur de la sortie : 11 colonnes.
+   - Filtre : Les résultats sont filtrés pour inclure uniquement les mariages de type "HF-H" avec au moins 300 mariés.
+   
+3. **Seq Scan on departement** :
+   - Cette partie du plan effectue un balayage séquentiel de la table `departement`.
+   - Coût estimé : entre 0.00 et 1.96.
+   - Nombre de lignes estimé : 96.
+   - Largeur de la sortie : 13 colonnes.
+
+Ce plan d'exécution indique que la requête utilise une jointure de hachage pour fusionner les résultats de deux balayages séquentiels,
+et que les résultats sont filtrés à l'aide de la clause WHERE pour inclure uniquement les mariages de type "HF-H" avec au moins 300 mariés.
+"""
+
+[request_1]
+title = 'EXPLAIN de la requête : Population totale par département en 2020'
+desc = "Voici le plan d'exécution de la requête qui permet de calculer la population totale par département en 2020."
+query = """\
+EXPLAIN 
+SELECT 
+    D.code AS "Code du département", 
+    D.nom AS "Département", 
+    SUM(valeur) AS "Population totale" 
+FROM ( 
+    SELECT * 
+    FROM statistiques_pop 
+    WHERE type_statistique = 'population' AND annee_debut = '2020' AND annee_fin = '2020' 
+) P 
+JOIN commune C ON P.code_commune = C.code 
+JOIN departement D ON C.code_departement = D.code 
+GROUP BY D.code, D.nom 
+ORDER BY D.code ASC;"""
+explain = """
+Ceci est le plan d'exécution détaillé d'une requête SQL généré par PostgreSQL. Voici une description de chaque partie du plan :
+
+1. **Finalize GroupAggregate** :
+   - Cette partie du plan représente la finalisation de l'agrégation de groupe.
+   - Coût estimé : entre 21837.75 et 21907.92.
+   - Nombre de lignes estimé : 96.
+   - Largeur de la sortie : 21 colonnes.
+   - Group Key : La clé de regroupement est basée sur le code du département (`d.code`).
+   
+2. **Gather Merge** :
+   - Cette partie du plan est responsable de la fusion des résultats partiels de différents travailleurs.
+   - Coût estimé : entre 21837.75 et 21906.00.
+   - Nombre de lignes estimé : 192.
+   - Largeur de la sortie : 21 colonnes.
+   - Travailleurs prévus : 2.
+   
+3. **Partial GroupAggregate** :
+   - Cette partie du plan effectue une agrégation partielle avant la fusion.
+   - Coût estimé : entre 20837.73 et 20883.81.
+   - Nombre de lignes estimé : 96.
+   - Largeur de la sortie : 21 colonnes.
+   - Group Key : La clé de regroupement est basée sur le code du département (`d.code`).
+   
+4. **Merge Join** :
+   - Cette partie du plan effectue une jointure par fusion.
+   - Coût estimé : entre 20837.73 et 20871.69.
+   - Nombre de lignes estimé : 2232.
+   - Largeur de la sortie : 21 colonnes.
+   - Conditions de jointure : La jointure est effectuée sur les codes de département (`c.code_departement` et `d.code`).
+   
+5. **Sort** :
+   - Cette partie du plan trie les résultats.
+   - Coût estimé : entre 5.12 et 5.36.
+   - Nombre de lignes estimé : 96.
+   - Largeur de la sortie : 13 colonnes.
+   - Clé de tri : Les résultats sont triés sur le code du département (`d.code`).
+   
+6. **Seq Scan** :
+   - Cette partie du plan effectue un balayage séquentiel de la table.
+   - Coût estimé : entre 0.00 et 1.96.
+   - Nombre de lignes estimé : 96.
+   - Largeur de la sortie : 13 colonnes.
+   - Table : Il s'agit de la table `departement`.
+
+Ce plan d'exécution indique les étapes que le moteur de base de données suit pour exécuter la requête,
+y compris les méthodes d'accès aux données, les stratégies de jointure, les opérations d'agrégation et de tri,
+ainsi que les estimations de coût et de cardinalité.
+"""
