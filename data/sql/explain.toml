@@ -1,5 +1,5 @@
 [request_0]
-title = 'EXPLAIN de la requête : Départements avec nouveaux mariés'
+title = 'Départements avec nouveaux mariés'
 desc = "Voici le plan d'exécution de la requête qui permet de lister des départements qui comptent au moins 10 nouveaux mariés de type HF-H (mixte)."
 query = """\
 EXPLAIN 
@@ -37,7 +37,7 @@ et que les résultats sont filtrés à l'aide de la clause WHERE pour inclure un
 """
 
 [request_1]
-title = 'EXPLAIN de la requête : Population totale par département en 2020'
+title = 'Population totale par département en 2020'
 desc = "Voici le plan d'exécution de la requête qui permet de calculer la population totale par département en 2020."
 query = """\
 EXPLAIN 

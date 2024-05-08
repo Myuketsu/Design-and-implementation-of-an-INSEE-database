@@ -40,7 +40,7 @@ def explain_selector() -> html.Div:
             html.Div(
                 [
                     dmc.Select(
-                        label=dmc.Text('Selection de la requête', weight=700),
+                        label=dmc.Text('Selection de la requête à EXPLAIN', weight=700),
                         value=0,
                         data=data,
                         id='explain_selector'
