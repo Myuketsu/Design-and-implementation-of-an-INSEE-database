@@ -53,7 +53,7 @@ def controls():
             html.Div(
                 [
                     dmc.Button('INSERT', id='triggers_controls_insert', n_clicks=0),
-                    dmc.Button('UPDATE', id='triggers_controls_update', n_clicks=0),
+                    # dmc.Button('UPDATE', id='triggers_controls_update', n_clicks=0),
                     dmc.Button('DELETE', id='triggers_controls_delete', n_clicks=0)
                 ],
                 id='triggers_buttons_groups'
@@ -118,14 +118,18 @@ def code_box():
     ],
     [
         Input('triggers_controls_insert', 'n_clicks'),
-        Input('triggers_controls_update', 'n_clicks'),
+        # Input('triggers_controls_update', 'n_clicks'),
         Input('triggers_controls_delete', 'n_clicks')
     ],
     [
         State('triggers_controls_radiogroup', 'value')
     ],
     prevent_initial_call=True)
-def show_notification_blocker(in_insert: int, in_update: int, in_delete: int, state_radiogroup: str) -> tuple:
+def show_notification_blocker(
+        in_insert: int, 
+        # in_update: int, 
+        in_delete: int, 
+        state_radiogroup: str) -> tuple:
     message = ''
     try:
         execute_sql(ACTIONS[ctx.triggered_id][1] % state_radiogroup)
@@ -149,5 +153,9 @@ def show_notification_blocker(in_insert: int, in_update: int, in_delete: int, st
     ],
     prevent_initial_call=True)
 def show_notification_update(in_number: int) -> tuple:
-    execute_sql('UPDATE statistiques_pop SET valeur = valeur + %s WHERE type_statistique = \'population\' AND annee_debut = \'2020\' AND code_commune = \'33063\';', [in_number])
+    value = 0 if in_number is None or isinstance(in_number, str) else in_number
+    execute_sql('''\
+    UPDATE statistiques_pop
+        SET valeur = valeur + %s
+    WHERE type_statistique = \'population\' AND annee_debut = \'2020\' AND code_commune = \'33063\';''', [value])
     return execute_sql(REQUEST).to_dict('records'),
