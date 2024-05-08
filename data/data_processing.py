@@ -31,10 +31,12 @@ def load_query(file_name: str) -> dict[str, dict[str, Any]]:
     with open(file_name, 'rb') as query_file:
         return tomllib.load(query_file)
     
-def population_preprocessing(df: pd.DataFrame, table: str='statistiques_pop') -> pd.DataFrame:
+def population_preprocessing(df: pd.DataFrame, excluded_columns: pd.Series=None, table: str='statistiques_pop') -> pd.DataFrame:
     population_config = load_config(table)
 
     df = df.copy()[~df['CODGEO'].str.startswith('97')]
+    if excluded_columns is not None:
+        df = df[~df['CODGEO'].isin(excluded_columns)]
 
     rename_mapper = {key: value for key, value in population_config.items() if isinstance(value, str)}
     df = df[list(population_config.keys())].rename(

@@ -1,6 +1,6 @@
 [indicateurs_departement]
 view_sql = """\
-CREATE VIEW indicateurs_departement AS
+CREATE OR REPLACE VIEW indicateurs_departement AS
 SELECT 
     D.code AS "Code", 
     D.nom AS "Département", 
@@ -43,7 +43,7 @@ query = 'SELECT * FROM indicateurs_departement;'
 
 [indicateurs_region]
 view_sql = """\
-CREATE VIEW indicateurs_region AS
+CREATE OR REPLACE VIEW indicateurs_region AS
 SELECT 
     R.code AS "Code", 
     R.nom AS "Région", 

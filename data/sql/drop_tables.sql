@@ -10,4 +10,6 @@ etat_matrimonial_anterieur_mariage,
 nationalite_epoux, 
 repartition_mensuelle_mariage,
 population,
+departement_pop,
+region_pop,
 statistiques_pop CASCADE;

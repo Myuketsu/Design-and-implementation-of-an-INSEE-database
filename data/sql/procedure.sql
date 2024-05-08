@@ -1,5 +1,4 @@
--- ALTER TABLES POUR LA PROCEDURE
-
+-- Tables population pour departement et region
 ALTER TABLE departement
 ADD COLUMN IF NOT EXISTS population INT;
 

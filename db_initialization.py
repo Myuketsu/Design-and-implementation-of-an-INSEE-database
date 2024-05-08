@@ -43,6 +43,7 @@ if __name__ == '__main__':
     df = read_csv(file_path) # Lecture du fichier CSV
     df = df[df['TYPECOM'].isin(['COM', 'ARM'])] # Filtration des données
     df = df[df['COM'].map(lambda x: int(x) < 97000 if x.isnumeric() else True)]
+    arm_com = df[df['TYPECOM'] == 'ARM']['COM'] # Commune qui sont des arrondissements
     df = select_rename_columns(df, table) # Sélection et renommage des colonnes d'intérêts
     timeit(copy_to_sql, DataFrame_to_buffer(df), table) # Envoie par COPY des données à la BD
 
@@ -109,7 +110,7 @@ if __name__ == '__main__':
     print('\nDossier pop_census\nCopy statistiques_pop', end=' - ')
     file_path, table = f'{PATH_TO_DATA}pop_census/base-cc-serie-historique-2020.CSV', 'statistiques_pop'
     df = read_csv(file_path, sep=';', dtype='object')
-    df = population_preprocessing(df, table)
+    df = population_preprocessing(df, arm_com, table)
     timeit(copy_to_sql, DataFrame_to_buffer(df), table)
 
     # ALTER TABLES
@@ -134,3 +135,5 @@ if __name__ == '__main__':
     # TRIGGERS
     print('\nTriggers', end=' - ')
     timeit(excute_sql_file, f'{PATH_TO_SQL}triggers.sql')
+
+    print('\n--- Importation des données réussie ---')
