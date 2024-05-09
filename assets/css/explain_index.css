@@ -1,4 +1,4 @@
-#explain_layout_index {
+#explains_layout {
     display: flex;
     height: 100%;
     flex-direction: column;
@@ -33,7 +33,7 @@
     display: none;
 }
 
-#explain_body_index {
+#explain_body {
     display: flex;
     flex-direction: column;
     padding: 10px 36px;

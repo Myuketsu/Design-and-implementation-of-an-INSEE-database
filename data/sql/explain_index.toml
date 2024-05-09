@@ -1,0 +1,190 @@
+# exemple qui montre que la requete doit etre plus complexe pour utiliser l'index
+
+[request_0]
+title = 'Départements avec nouveaux mariés'
+desc = "Voici le plan d'exécution de la requête qui permet de lister les communes avec moins de 5000 habitants."
+query = """\
+EXPLAIN 
+SELECT C.code, C.nom, type_statistique, valeur, annee_debut FROM commune C
+JOIN statistiques_pop S ON C.code = S.code_commune
+WHERE S.type_statistique = 'population' AND S.valeur < '5000';"""
+explain = """
+Dans ce plan d'exécution, voici ce que chaque partie indique :
+
+1. **Hash Join** :
+   - Cette partie du plan indique une jointure de hachage entre les tables `statistiques_pop` (alias `s`) et `commune` (alias `c`).
+   - La condition de jointure est basée sur les attributs `code_commune` de la table `statistiques_pop` et `code` de la table `commune`.
+
+2. **Seq Scan on statistiques_pop** :
+   - C'est une opération de balayage séquentiel de la table `statistiques_pop`.
+   - Le coût estimé est de 0.00 à 28191.68.
+   - La condition de filtrage est appliquée pour sélectionner les lignes où la valeur est inférieure à 5000 et le type de statistique est "population".
+
+3. **Hash** :
+   - C'est une opération de hachage pour la table `commune`.
+   - Elle prépare les données de la table `commune` pour la jointure de hachage.
+
+4. **Seq Scan on commune** :
+   - C'est une autre opération de balayage séquentiel, cette fois pour la table `commune`.
+   - Le coût estimé est de 0.00 à 588.61.
+
+Sans la création d'un index, PostgreSQL utilise des balayages séquentiels pour rechercher les données dans les tables,
+ce qui peut être moins efficace pour les grandes quantités de données.
+La création d'un index sur les colonnes utilisées dans les conditions de filtrage et de jointure peut améliorer les performances de la requête.
+"""
+
+[request_1]
+title = 'Population totale par département en 2020'
+desc = "Voici le plan d'exécution de la requête qui permet de calculer la population totale par département en 2020."
+queries = ["""\
+CREATE INDEX idx_population_value ON statistiques_pop (valeur);""", 
+"""EXPLAIN 
+SELECT 
+    D.code AS "Code du département", 
+    D.nom AS "Département", 
+    SUM(valeur) AS "Population totale" 
+FROM ( 
+    SELECT * 
+    FROM statistiques_pop 
+    WHERE type_statistique = 'population' AND annee_debut = '2020' AND annee_fin = '2020' 
+) P 
+JOIN commune C ON P.code_commune = C.code 
+JOIN departement D ON C.code_departement = D.code 
+GROUP BY D.code, D.nom 
+ORDER BY D.code ASC;"""]
+explain = """
+Dans ce plan d'exécution, nous pouvons voir que le SGBD utilise toujours une jointure de hachage (Hash Join) pour fusionner les résultats des balayages séquentiels (Seq Scan)
+des tables statistiques_pop et commune.
+
+Bien que l'index sur l'attribut valeur de la table statistiques_pop ait été créé,
+le plan d'exécution indique toujours une analyse séquentielle complète de cette table (Seq Scan on statistiques_pop).
+Cela signifie que le SGBD n'a pas choisi d'utiliser cet index pour optimiser la recherche des données.
+
+Il est possible que le SGBD estime que l'utilisation de l'index ne serait pas plus efficace que l'analyse séquentielle complète,
+en fonction des statistiques sur les données et des coûts associés à l'utilisation de l'index.
+"""
+
+# Bon exemple pour montrer l'importance de l'indexation des colonnes utilisées dans les conditions de jointure et de filtrage.
+
+[request_2]
+title = 'Pourcentage de mariés par habitant'
+desc = "On affiche les départements où le pourcentage de mariés par habitant pour les mariages de type HF-H (mixte) et pour les personnes de 20 à 24 ans."
+query = """\
+EXPLAIN
+SELECT 
+    M.type_de_mariage, 
+    M.groupe_age, 
+    M.nombre_de_maries, 
+    M.iddep, 
+    D.nom AS nom_departement, 
+    SUM(S.nbr_pop) AS "Population totale", 
+    (M.nombre_de_maries / NULLIF(SUM(S.nbr_pop), 0)) * 100 AS "Pourcentage de mariés par habitant" 
+FROM mariage M 
+JOIN departement D ON D.code = M.iddep 
+JOIN (
+    SELECT 
+        SUM(valeur) AS nbr_pop, 
+        code_commune, 
+        D.code AS code_departement, 
+        C.nom AS nom_commune, 
+        D.nom AS nom_departement, 
+        D.code
+    FROM statistiques_pop S 
+    JOIN commune C ON C.code = S.code_commune 
+    JOIN departement D ON D.code = C.code_departement 
+    WHERE type_statistique = 'population' AND annee_debut = '2020'
+    GROUP BY code_commune, C.nom, D.nom, D.code
+) S ON D.code = S.code_departement
+WHERE M.groupe_age = '20_24' AND M.type_de_mariage = 'HF-H'
+GROUP BY M.type_de_mariage, M.groupe_age, M.nombre_de_maries, M.iddep, D.nom;"""
+explain = """
+
+Dans le plan d'exécution sans l'utilisation d'un index, voici une analyse détaillée :
+
+1. **HashAggregate (Agrégation par hachage)** :
+   - Cette partie du plan d'exécution effectue une agrégation des données après la jointure, en regroupant les lignes en fonction des clés spécifiées (`m.nombre_de_maries`, `m.iddep`, `d.nom`).
+   - Coût estimé : entre 24960.70 et 25135.42.
+   - Nombre de lignes estimé : 8736.
+   - Largeur de la sortie : 43 colonnes.
+
+2. **Hash Join (Jointure par hachage)** :
+   - Cette partie du plan d'exécution effectue une jointure par hachage entre les tables `departement d_1` et `departement d`.
+   - Coût estimé : entre 23881.99 et 24805.44.
+   - Nombre de lignes estimé : 15526.
+   - Largeur de la sortie : 35 colonnes.
+   - Conditions de jointure : Les codes de département (`d_1.code` et `d.code`) sont utilisés comme clés de jointure.
+
+3. **Séquences de balayage (Seq Scan)** :
+   - Plusieurs séquences de balayage sont effectuées sur les tables `statistiques_pop`, `commune`, `mariage` et `departement`.
+   - Ces balayages séquentiels impliquent une recherche linéaire dans toutes les lignes des tables concernées.
+   - Pour chaque table, le coût estimé dépend de la taille de la table et des conditions de filtrage spécifiées dans la requête.
+
+4. **Filtrage avant jointure** :
+   - Les filtres sont appliqués avant la jointure, ce qui signifie que les données sont filtrées individuellement dans chaque table avant d'être jointes.
+   - Cela peut entraîner un nombre important de lignes à traiter lors de la jointure, ce qui peut augmenter le coût d'exécution global de la requête.
+
+En résumé, le plan d'exécution sans index montre une exécution de la requête qui nécessite des balayages séquentiels sur plusieurs tables,
+avec des agrégations et des jointures par hachage. Cela peut entraîner des performances moins efficaces,
+en particulier lorsque les tables impliquées sont volumineuses.
+L'utilisation d'index peut contribuer à améliorer les performances en accélérant la recherche et la sélection des données nécessaires pour exécuter
+la requête.
+
+"""
+
+[request_3]
+title = 'Pourcentage de mariés par habitant'
+desc = "On affiche les départements où le pourcentage de mariés par habitant pour les mariages de type HF-H (mixte) et pour les personnes de 20 à 24 ans."
+query = """\
+CREATE INDEX idx_iddep ON mariage (iddep);
+CREATE INDEX idx_code_departement ON departement (code);
+CREATE INDEX idx_type_statistique ON statistiques_pop (type_statistique);
+CREATE INDEX idx_annee_debut ON statistiques_pop (annee_debut);
+
+EXPLAIN
+SELECT 
+    M.type_de_mariage, 
+    M.groupe_age, 
+    M.nombre_de_maries, 
+    M.iddep, 
+    D.nom AS nom_departement, 
+    SUM(S.nbr_pop) AS "Population totale", 
+    (M.nombre_de_maries / NULLIF(SUM(S.nbr_pop), 0)) * 100 AS "Pourcentage de mariés par habitant" 
+FROM mariage M 
+JOIN departement D ON D.code = M.iddep 
+JOIN (
+    SELECT 
+        SUM(valeur) AS nbr_pop, 
+        code_commune, 
+        D.code AS code_departement, 
+        C.nom AS nom_commune, 
+        D.nom AS nom_departement, 
+        D.code
+    FROM statistiques_pop S 
+    JOIN commune C ON C.code = S.code_commune 
+    JOIN departement D ON D.code = C.code_departement 
+    WHERE type_statistique = 'population' AND annee_debut = '2020'
+    GROUP BY code_commune, C.nom, D.nom, D.code
+) S ON D.code = S.code_departement
+WHERE M.groupe_age = '20_24' AND M.type_de_mariage = 'HF-H'
+GROUP BY M.type_de_mariage, M.groupe_age, M.nombre_de_maries, M.iddep, D.nom;"""
+explain = """
+
+Avec l'ajout de l'index, on peut observer les changements suivants dans le plan d'exécution :
+
+1. **Index Scan** : La partie du plan d'exécution qui concerne la table `statistiques_pop` utilise désormais un balayage d'index (`Index Scan`)
+plutôt qu'un balayage séquentiel.
+Cela signifie que PostgreSQL recherche directement dans l'index pour trouver les lignes qui correspondent aux conditions spécifiées dans la requête,
+ce qui peut être beaucoup plus efficace en termes de performances, surtout lorsque la table contient un grand nombre de lignes.
+
+2. **Coût réduit** :
+Le coût estimé pour cette partie du plan d'exécution a été réduit,
+passant de 13043.42 à 0.43, ce qui indique une amélioration significative des performances.
+
+3. **Filtrage avant jointure** : Les filtres sont appliqués avant la jointure,
+ce qui permet de réduire le nombre de lignes à traiter lors de la jointure, contribuant ainsi à des performances globales plus rapides.
+
+En résumé, l'utilisation de l'index sur la colonne `type_statistique` dans la table `statistiques_pop` a considérablement amélioré
+les performances de la requête en réduisant le temps nécessaire pour trouver les données correspondant aux critères de sélection,
+ce qui se traduit par un coût d'exécution global réduit.
+
+"""

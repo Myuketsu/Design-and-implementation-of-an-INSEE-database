@@ -10,7 +10,7 @@ FROM departement D
 JOIN premier_mariage PM ON D.code = PM.iddep
 WHERE type_de_mariage = 'HF-H' AND PM.nombre_de_maries >= 300;"""
 explain = """
-Ceci est un autre plan d'exécution détaillé d'une requête SQL généré par PostgreSQL. Voici une description de chaque partie du plan :
+Voici une description de chaque partie du plan :
 
 1. **Hash Join** :
    - Cette partie du plan utilise une jointure de hachage pour fusionner les résultats de deux balayages séquentiels.
@@ -55,7 +55,7 @@ JOIN departement D ON C.code_departement = D.code
 GROUP BY D.code, D.nom 
 ORDER BY D.code ASC;"""
 explain = """
-Ceci est le plan d'exécution détaillé d'une requête SQL généré par PostgreSQL. Voici une description de chaque partie du plan :
+Voici une description de chaque partie du plan :
 
 1. **Finalize GroupAggregate** :
    - Cette partie du plan représente la finalisation de l'agrégation de groupe.
