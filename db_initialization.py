@@ -16,6 +16,8 @@ def timeit(func, *args, **kwargs):
     return result
 
 if __name__ == '__main__':
+    start_time = perf_counter()
+
     # CREATE TABLES
     print('Création des tables', end=' - ')
     timeit(excute_sql_file, f'{PATH_TO_SQL}create_tables.sql')
@@ -136,4 +138,5 @@ if __name__ == '__main__':
     print('\nTriggers', end=' - ')
     timeit(excute_sql_file, f'{PATH_TO_SQL}triggers.sql')
 
-    print('\n--- Importation des données réussie ---')
+    total_time = perf_counter() - start_time
+    print(f'\n--- Importation des données réussie [Temps d\'exécution total {total_time:.5f}s] ---')

@@ -12,10 +12,34 @@ from numpy.random import rand
 
 register_page(__name__, path='/triggers', name='Triggers', title='Triggers', order=5, category_name='Triggers')
 
-REQUEST = 'SELECT C.nom AS Com_nom, S.valeur AS Com_pop, D.nom AS Dep_nom, D.population AS Dep_pop, R.nom AS Reg_nom, R.population AS Reg_pop FROM commune C JOIN departement D ON C.code_departement = D.code JOIN region R ON D.code_region = R.code JOIN (SELECT * FROM statistiques_pop WHERE type_statistique = \'population\' AND annee_debut = \'2020\') S ON C.code = S.code_commune WHERE C.nom = \'Bordeaux\';'
+REQUEST = """\
+    SELECT C.nom AS Com_nom, S.valeur AS Com_pop, D.nom AS Dep_nom, DP.population AS Dep_pop, R.nom AS Reg_nom, RP.population AS Reg_pop
+    FROM (
+        SELECT *
+        FROM commune
+        WHERE nom = 'Bordeaux'
+    ) C
+    JOIN departement D ON C.code_departement = D.code
+    JOIN (
+        SELECT code_departement, population
+        FROM departement_pop
+        WHERE annee = '2020'
+    ) DP ON D.code = DP.code_departement
+    JOIN region R ON D.code_region = R.code
+    JOIN (
+        SELECT code_region, population
+        FROM region_pop
+        WHERE annee = '2020'
+    ) RP ON R.code = RP.code_region
+    JOIN (
+        SELECT * 
+        FROM statistiques_pop 
+        WHERE type_statistique = 'population' AND annee_debut = '2020'
+    ) S ON C.code = S.code_commune;"""
+
 ACTIONS = {
     'triggers_controls_insert': ('INSERT', 'INSERT INTO %s VALUES (999);'),
-    'triggers_controls_update': ('UPDATE', 'UPDATE %s SET population = -999 WHERE code = \'75\';'),
+    'triggers_controls_update': ('UPDATE', 'UPDATE %s SET nom = \'Ancienne-Aquitaine\' WHERE code = \'75\';'),
     'triggers_controls_delete': ('DELETE', 'DELETE FROM %s WHERE code = \'75\';'),
 }
 
@@ -53,7 +77,7 @@ def controls():
             html.Div(
                 [
                     dmc.Button('INSERT', id='triggers_controls_insert', n_clicks=0),
-                    # dmc.Button('UPDATE', id='triggers_controls_update', n_clicks=0),
+                    dmc.Button('UPDATE', id='triggers_controls_update', n_clicks=0),
                     dmc.Button('DELETE', id='triggers_controls_delete', n_clicks=0)
                 ],
                 id='triggers_buttons_groups'
@@ -68,11 +92,12 @@ def result_table():
         [
             dmc.Title('Déclencheur du trigger : Population', order=4, transform='uppercase', style={'margin': 'auto'}),
             dmc.NumberInput(
-                label='Quantité d\'habitant à ajouter à Bordeaux',
-                value=100,
+                label='Quantité d\'habitant à ajouter à Bordeaux en 2020',
+                value=1,
                 min=0,
-                step=50,
-                style={'width': 300, 'margin': 'auto'},
+                max=10,
+                step=1,
+                style={'width': 320, 'margin': 'auto'},
                 id='triggers_add_number'
             ),
             DataTable(
@@ -118,7 +143,7 @@ def code_box():
     ],
     [
         Input('triggers_controls_insert', 'n_clicks'),
-        # Input('triggers_controls_update', 'n_clicks'),
+        Input('triggers_controls_update', 'n_clicks'),
         Input('triggers_controls_delete', 'n_clicks')
     ],
     [
@@ -127,7 +152,7 @@ def code_box():
     prevent_initial_call=True)
 def show_notification_blocker(
         in_insert: int, 
-        # in_update: int, 
+        in_update: int, 
         in_delete: int, 
         state_radiogroup: str) -> tuple:
     message = ''
