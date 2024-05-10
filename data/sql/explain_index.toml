@@ -3,11 +3,11 @@
 [request_0]
 title = 'Départements avec nouveaux mariés'
 desc = "Voici le plan d'exécution de la requête qui permet de lister les communes avec moins de 5000 habitants."
-query = """\
+queries = ["""\
 EXPLAIN 
 SELECT C.code, C.nom, type_statistique, valeur, annee_debut FROM commune C
 JOIN statistiques_pop S ON C.code = S.code_commune
-WHERE S.type_statistique = 'population' AND S.valeur < '5000';"""
+WHERE S.type_statistique = 'population' AND S.valeur < '5000';"""]
 explain = """
 Dans ce plan d'exécution, voici ce que chaque partie indique :
 
@@ -69,7 +69,7 @@ en fonction des statistiques sur les données et des coûts associés à l'utili
 [request_2]
 title = 'Pourcentage de mariés par habitant'
 desc = "On affiche les départements où le pourcentage de mariés par habitant pour les mariages de type HF-H (mixte) et pour les personnes de 20 à 24 ans."
-query = """\
+queries = ["""\
 EXPLAIN
 SELECT 
     M.type_de_mariage, 
@@ -96,7 +96,7 @@ JOIN (
     GROUP BY code_commune, C.nom, D.nom, D.code
 ) S ON D.code = S.code_departement
 WHERE M.groupe_age = '20_24' AND M.type_de_mariage = 'HF-H'
-GROUP BY M.type_de_mariage, M.groupe_age, M.nombre_de_maries, M.iddep, D.nom;"""
+GROUP BY M.type_de_mariage, M.groupe_age, M.nombre_de_maries, M.iddep, D.nom;"""]
 explain = """
 
 Dans le plan d'exécution sans l'utilisation d'un index, voici une analyse détaillée :
@@ -134,12 +134,15 @@ la requête.
 [request_3]
 title = 'Pourcentage de mariés par habitant'
 desc = "On affiche les départements où le pourcentage de mariés par habitant pour les mariages de type HF-H (mixte) et pour les personnes de 20 à 24 ans."
-query = """\
-CREATE INDEX idx_iddep ON mariage (iddep);
-CREATE INDEX idx_code_departement ON departement (code);
-CREATE INDEX idx_type_statistique ON statistiques_pop (type_statistique);
-CREATE INDEX idx_annee_debut ON statistiques_pop (annee_debut);
-
+queries = ["""\
+CREATE INDEX idx_iddep ON mariage (iddep);""",
+"""\
+CREATE INDEX idx_code_departement ON departement (code);""",
+"""\
+CREATE INDEX idx_type_statistique ON statistiques_pop (type_statistique);""",
+"""\
+CREATE INDEX idx_annee_debut ON statistiques_pop (annee_debut);""",
+"""\
 EXPLAIN
 SELECT 
     M.type_de_mariage, 
@@ -166,7 +169,7 @@ JOIN (
     GROUP BY code_commune, C.nom, D.nom, D.code
 ) S ON D.code = S.code_departement
 WHERE M.groupe_age = '20_24' AND M.type_de_mariage = 'HF-H'
-GROUP BY M.type_de_mariage, M.groupe_age, M.nombre_de_maries, M.iddep, D.nom;"""
+GROUP BY M.type_de_mariage, M.groupe_age, M.nombre_de_maries, M.iddep, D.nom;"""]
 explain = """
 
 Avec l'ajout de l'index, on peut observer les changements suivants dans le plan d'exécution :

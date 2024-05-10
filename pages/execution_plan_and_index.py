@@ -9,6 +9,8 @@ from collections import namedtuple
 from data.db_connector import execute_sql
 from data.data_processing import load_query
 
+import pandas as pd
+
 register_page(__name__, path='/execution_plan_and_index', name='Index', title='Plan d\'exécution et Index', order=8, category_name='Plan d\'exécution')
 
 query_file = load_query('./data/sql/explain_index.toml')
@@ -35,6 +37,7 @@ def explain_selector_index() -> html.Div:
     data = [
         {'value': index, 'label': explain.title} for index, explain in enumerate(EXPLAIN)
     ]
+    print(EXPLAIN[0].queries)
     return html.Div(
         [
             html.Div(
@@ -53,7 +56,7 @@ def explain_selector_index() -> html.Div:
                 [
                     dmc.Title('Contenu de la requête SQL', order=6),
                     dmc.Prism(
-                        EXPLAIN[0].query,
+                        '\n'.join(EXPLAIN[0].queries),
                         language='sql',
                         withLineNumbers=True,
                         id='explain_selector_index_SQL_viewer'
@@ -66,13 +69,19 @@ def explain_selector_index() -> html.Div:
     )
 
 def explain_body_index() -> html.Div:
-    df = execute_sql(EXPLAIN[0].query)
+
+    results = []
+    for query in EXPLAIN[0].queries:
+        df = execute_sql(query)
+        results.append(df)
+    final_df = pd.concat(results)
+
     return html.Div(
         [
             dmc.Title(EXPLAIN[0].desc, order=6, id='explain_body_index_table_title'),
             DataTable(
-                data=df.to_dict('records'),
-                columns=[{'id': col, 'name': col} for col in df.columns],
+                data=final_df.to_dict('records'),
+                columns=[{'id': col, 'name': col} for col in final_df.columns],
                 page_size=15,
                 style_table={
                     'border-left': '1px solid rgb(233, 236, 239)',
@@ -113,11 +122,15 @@ def explain_description_index() -> html.Div:
         Input('explain_selector_index', 'value')
     ])
 def update_reconstructed_curve(in_explain: int) -> tuple:
-    sql_query = EXPLAIN[in_explain].query
+    sql_query = '\n'.join(EXPLAIN[in_explain].queries)
 
-    df = execute_sql(EXPLAIN[in_explain].query)
-    data = df.to_dict('records')
-    columns = [{'id': col, 'name': col} for col in df.columns]
+    results = []
+    for query in EXPLAIN[in_explain].queries:
+        df = execute_sql(query)
+        results.append(df)
+    final_df = pd.concat(results)
+    data = final_df.to_dict('records')
+    columns = [{'id': col, 'name': col} for col in final_df.columns]
 
     desc_table = EXPLAIN[in_explain].desc
     explain = EXPLAIN[in_explain].explain
