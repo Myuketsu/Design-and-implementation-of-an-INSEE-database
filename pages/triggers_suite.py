@@ -8,8 +8,8 @@ from data.data_processing import SQL_PATH, get_file_content
 
 register_page(__name__, path='/triggers_suite', name='Suite', title='Triggers suite', order=6, category_name='Triggers')
 
-REQUEST_DEP = '''SELECT D.code, D.nom, DP.annee, DP.population FROM departement_pop DP JOIN departement D ON D.code = DP.code_departement WHERE annee = '2024';'''
-REQUEST_REG = '''SELECT R.code, R.nom, RP.annee, RP.population FROM region_pop RP JOIN region R ON R.code = RP.code_region WHERE annee = '2024';'''
+REQUEST_DEP = '''SELECT D.code AS code_dep, D.nom AS nom_dep, DP.annee, DP.population FROM departement_pop DP JOIN departement D ON D.code = DP.code_departement WHERE annee = '2024';'''
+REQUEST_REG = '''SELECT R.code AS code_reg, R.nom AS nom_reg, RP.annee, RP.population FROM region_pop RP JOIN region R ON R.code = RP.code_region WHERE annee = '2024';'''
 
 def layout():
     return html.Div(
@@ -26,7 +26,7 @@ def result_table():
     return html.Div(
         [
             dmc.Title('Insertion de données dans un département', order=4, transform='uppercase', style={'margin': '0 auto'}),
-            dmc.Text('L\'insertion se fera en 2024 et la population sera égale à 1 pour chaque commune.', style={'margin': '0 auto'}),
+            dmc.Text('L\'insertion se fera en 2024 et la population sera égale à 1 pour chaque commune.\n(La Corse se compose de deux régions : \'Haute-Corse\', \'Corse-du-Sud\')', style={'margin': '0 auto'}),
             html.Div(
                 [
                     dmc.Select(
@@ -36,7 +36,8 @@ def result_table():
                         data=execute_sql('SELECT code, nom FROM departement;').rename(columns={'code': 'value', 'nom': 'label'}).to_dict('records'),
                         style={'width': 200},
                     ),
-                    dmc.Button('INSÉRER', id='triggers_suite_button_insert', n_clicks=0)
+                    dmc.Button('INSÉRER', id='triggers_suite_button_insert', n_clicks=0),
+                    dmc.Button('RESET POP', id='triggers_suite_button_reset', n_clicks=0, color='red')
                 ],
                 id='triggers_suite_buttons_groups'
             ),
@@ -93,19 +94,26 @@ def code_box():
         Output('triggers_suite_table_region', 'data'),
     ],
     [
-        Input('triggers_suite_button_insert', 'n_clicks')
+        Input('triggers_suite_button_insert', 'n_clicks'),
+        Input('triggers_suite_button_reset', 'n_clicks')
     ],
     [
         State('triggers_suite_select', 'value')
     ],
     prevent_initial_call=True)
-def table_update_triggers_insert(in_btn: int, state_select: int) -> tuple:
-    df_com_from_dep = execute_sql('SELECT code FROM commune WHERE code_departement = %s;', [state_select])
-    str_builder = 'INSERT INTO statistiques_pop (code_commune, type_statistique, annee_debut, annee_fin, valeur) VALUES\n'
-    str_builder += ('(\'' + df_com_from_dep['code'] + '\', \'population\', \'2024\', \'2024\', 1)').str.cat(sep=',\n')
-    str_builder += '\nON CONFLICT DO NOTHING;'
+def table_update_triggers_insert(in_btn_insert: int, in_btn_reset: int, state_select: int) -> tuple:
+    if ctx.triggered_id == 'triggers_suite_button_insert':
+        df_com_from_dep = execute_sql('SELECT code FROM commune WHERE code_departement = %s;', [state_select])
+        str_builder = 'INSERT INTO statistiques_pop (code_commune, type_statistique, annee_debut, annee_fin, valeur) VALUES\n'
+        str_builder += ('(\'' + df_com_from_dep['code'] + '\', \'population\', \'2024\', \'2024\', 1)').str.cat(sep=',\n')
+        str_builder += '\nON CONFLICT DO NOTHING;'
 
-    execute_sql(str_builder)
+        execute_sql(str_builder)
+
+    elif ctx.triggered_id == 'triggers_suite_button_reset':
+        execute_sql('DELETE FROM statistiques_pop WHERE type_statistique = \'population\' AND annee_debut = \'2024\';')
+        execute_sql('DELETE FROM departement_pop WHERE annee = \'2024\';')
+        execute_sql('DELETE FROM region_pop WHERE annee = \'2024\';')
 
     df_dep = execute_sql(REQUEST_DEP)
     df_reg = execute_sql(REQUEST_REG)
