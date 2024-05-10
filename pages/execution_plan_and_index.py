@@ -37,7 +37,6 @@ def explain_selector_index() -> html.Div:
     data = [
         {'value': index, 'label': explain.title} for index, explain in enumerate(EXPLAIN)
     ]
-    print(EXPLAIN[0].queries)
     return html.Div(
         [
             html.Div(
@@ -69,7 +68,7 @@ def explain_selector_index() -> html.Div:
     )
 
 def explain_body_index() -> html.Div:
-
+    delete_index()
     results = []
     for query in EXPLAIN[0].queries:
         df = execute_sql(query)
@@ -106,6 +105,13 @@ def explain_description_index() -> html.Div:
         id='explain_description_index'
     )
 
+def delete_index():
+    execute_sql("DROP INDEX IF EXISTS idx_population_value;")
+    execute_sql("DROP INDEX IF EXISTS idx_iddep;")
+    execute_sql("DROP INDEX IF EXISTS idx_code_departement;")
+    execute_sql("DROP INDEX IF EXISTS idx_type_statistique;")
+    execute_sql("DROP INDEX IF EXISTS idx_annee_debut;")
+
 
 # --- CALLBACKS ---
 
@@ -121,7 +127,9 @@ def explain_description_index() -> html.Div:
     [
         Input('explain_selector_index', 'value')
     ])
+
 def update_reconstructed_curve(in_explain: int) -> tuple:
+    delete_index()
     sql_query = '\n'.join(EXPLAIN[in_explain].queries)
 
     results = []

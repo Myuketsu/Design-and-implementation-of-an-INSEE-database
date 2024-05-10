@@ -1,7 +1,7 @@
 # exemple qui montre que la requete doit etre plus complexe pour utiliser l'index
 
 [request_0]
-title = 'Départements avec nouveaux mariés'
+title = 'Communes avec moins de 5000 habitants'
 desc = "Voici le plan d'exécution de la requête qui permet de lister les communes avec moins de 5000 habitants."
 queries = ["""\
 EXPLAIN 
@@ -34,24 +34,14 @@ La création d'un index sur les colonnes utilisées dans les conditions de filtr
 """
 
 [request_1]
-title = 'Population totale par département en 2020'
+title = "Communes avec moins de 5000 habitants avec l'index"
 desc = "Voici le plan d'exécution de la requête qui permet de calculer la population totale par département en 2020."
 queries = ["""\
 CREATE INDEX idx_population_value ON statistiques_pop (valeur);""", 
 """EXPLAIN 
-SELECT 
-    D.code AS "Code du département", 
-    D.nom AS "Département", 
-    SUM(valeur) AS "Population totale" 
-FROM ( 
-    SELECT * 
-    FROM statistiques_pop 
-    WHERE type_statistique = 'population' AND annee_debut = '2020' AND annee_fin = '2020' 
-) P 
-JOIN commune C ON P.code_commune = C.code 
-JOIN departement D ON C.code_departement = D.code 
-GROUP BY D.code, D.nom 
-ORDER BY D.code ASC;"""]
+SELECT C.code, C.nom, type_statistique, valeur, annee_debut FROM commune C
+JOIN statistiques_pop S ON C.code = S.code_commune
+WHERE S.type_statistique = 'population' AND S.valeur < '5000';"""]
 explain = """
 Dans ce plan d'exécution, nous pouvons voir que le SGBD utilise toujours une jointure de hachage (Hash Join) pour fusionner les résultats des balayages séquentiels (Seq Scan)
 des tables statistiques_pop et commune.
@@ -132,7 +122,7 @@ la requête.
 """
 
 [request_3]
-title = 'Pourcentage de mariés par habitant'
+title = "Pourcentage de mariés par habitant aved l'index"
 desc = "On affiche les départements où le pourcentage de mariés par habitant pour les mariages de type HF-H (mixte) et pour les personnes de 20 à 24 ans."
 queries = ["""\
 CREATE INDEX idx_iddep ON mariage (iddep);""",
