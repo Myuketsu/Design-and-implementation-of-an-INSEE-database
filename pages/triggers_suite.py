@@ -26,7 +26,7 @@ def result_table():
     return html.Div(
         [
             dmc.Title('Insertion de données dans un département', order=4, transform='uppercase', style={'margin': '0 auto'}),
-            dmc.Text('L\'insertion se fera en 2024 et la population sera égale à 1 pour chaque commune.\n(La Corse se compose de deux régions : \'Haute-Corse\', \'Corse-du-Sud\')', style={'margin': '0 auto'}),
+            dmc.Text('L\'insertion se fera en 2024 et la population sera égale à 1 pour chaque commune.\n(La Corse se compose de deux régions : \'Haute-Corse\', \'Corse-du-Sud\'. La Corse apparaîtra dans la deuxième table \'region\' uniquement si la population de ses départements est fournie.)', style={'margin': '0 auto'}),
             html.Div(
                 [
                     dmc.Select(

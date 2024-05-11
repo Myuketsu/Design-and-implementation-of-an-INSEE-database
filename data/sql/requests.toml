@@ -9,7 +9,7 @@ SELECT
 FROM ( 
     SELECT * 
     FROM statistiques_pop 
-    WHERE type_statistique = 'population' AND annee_debut = '2020' AND annee_fin = '2020' 
+    WHERE type_statistique = 'population' AND annee_debut = 2020 AND annee_fin = 2020 
 ) P 
 JOIN commune C ON P.code_commune = C.code 
 JOIN departement D ON C.code_departement = D.code 
@@ -41,7 +41,7 @@ JOIN (
     FROM statistiques_pop S 
     JOIN commune C ON C.code = S.code_commune 
     JOIN departement D ON D.code = C.code_departement 
-    WHERE type_statistique = 'population' AND annee_debut = '2020'
+    WHERE type_statistique = 'population' AND annee_debut = 2020
     GROUP BY code_commune, C.nom, D.nom, D.code
 ) S ON D.code = S.code_departement
 WHERE M.groupe_age = '20_24' AND M.type_de_mariage = 'HF-H'
@@ -53,13 +53,13 @@ desc = 'On affiche la densité de population au kilomètre carré pour chaque d�
 query = """\
 SELECT 
     D.nom AS nom_departement, 
-    SUM(P.superficie) AS superficie_totale, 
+    SUM(C.superficie) AS superficie_totale, 
     SUM(P.valeur) AS population_totale, 
-    SUM(P.valeur) / SUM(P.superficie) AS "densité population au kilomètre carré"
+    SUM(P.valeur) / SUM(C.superficie) AS "densité population au kilomètre carré"
 FROM (
     SELECT *
     FROM statistiques_pop
-    WHERE type_statistique = 'population' AND annee_debut = '2020' AND annee_fin = '2020'
+    WHERE type_statistique = 'population' AND annee_debut = 2020 AND annee_fin = 2020
 ) P
 JOIN commune C ON P.code_commune = C.code 
 JOIN departement D ON C.code_departement = D.code
@@ -88,7 +88,7 @@ SELECT
 FROM (
     SELECT *
     FROM statistiques_pop
-    WHERE type_statistique = 'population' AND annee_debut = '2020' AND annee_fin = '2020'
+    WHERE type_statistique = 'population' AND annee_debut = 2020 AND annee_fin = 2020
 ) P
 JOIN commune C ON P.code_commune = C.code 
 WHERE P.valeur >= 20000 AND C.code_departement = '33'
@@ -104,7 +104,7 @@ SELECT
 FROM (
     SELECT *
     FROM statistiques_pop
-    WHERE type_statistique = 'population' AND annee_debut = '2020' AND annee_fin = '2020'
+    WHERE type_statistique = 'population' AND annee_debut = 2020 AND annee_fin = 2020
 ) P
 JOIN commune C ON P.code_commune = C.code 
 JOIN departement D ON C.code_departement = D.code

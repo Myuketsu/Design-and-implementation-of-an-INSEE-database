@@ -2,43 +2,43 @@
 
 -- On ajoute les colonnes pour les clés étrangères dans la table mariage qu'on avait mis sur la photo
 ALTER TABLE mariage
-ADD COLUMN idreg VARCHAR(8),
-ADD COLUMN iddep VARCHAR(8);
+ADD COLUMN idreg VARCHAR(2),
+ADD COLUMN iddep VARCHAR(2);
 
 -- ALTER TABLE premier_mariage
 
 -- On ajoute les colonnes pour les clés étrangères dans la table mariage qu'on avait mis sur la photo
 ALTER TABLE premier_mariage
-ADD COLUMN idreg VARCHAR(8),
-ADD COLUMN iddep VARCHAR(8);
+ADD COLUMN idreg VARCHAR(2),
+ADD COLUMN iddep VARCHAR(2);
 
 -- ALTER TABLE pays_mariage
 
 -- On ajoute les colonnes pour les clés étrangères dans la table mariage qu'on avait mis sur la photo
 ALTER TABLE pays_mariage
-ADD COLUMN idreg VARCHAR(8),
-ADD COLUMN iddep VARCHAR(8);
+ADD COLUMN idreg VARCHAR(2),
+ADD COLUMN iddep VARCHAR(2);
 
 -- ALTER TABLE etat_matrimonial_anterieur_mariage
 
 -- On ajoute les colonnes pour les clés étrangères dans la table mariage qu'on avait mis sur la photo
 ALTER TABLE etat_matrimonial_anterieur_mariage
-ADD COLUMN idreg VARCHAR(8),
-ADD COLUMN iddep VARCHAR(8);
+ADD COLUMN idreg VARCHAR(2),
+ADD COLUMN iddep VARCHAR(2);
 
 -- ALTER TABLE nationalite_epoux
 
 -- On ajoute les colonnes pour les clés étrangères dans la table mariage qu'on avait mis sur la photo
 ALTER TABLE nationalite_epoux
-ADD COLUMN idreg VARCHAR(8),
-ADD COLUMN iddep VARCHAR(8);
+ADD COLUMN idreg VARCHAR(2),
+ADD COLUMN iddep VARCHAR(2);
 
 -- ALTER TABLE repartition_mensuelle_mariage
 
 -- On ajoute les colonnes pour les clés étrangères dans la table mariage qu'on avait mis sur la photo
 ALTER TABLE repartition_mensuelle_mariage
-ADD COLUMN idreg VARCHAR(8),
-ADD COLUMN iddep VARCHAR(8);
+ADD COLUMN idreg VARCHAR(2),
+ADD COLUMN iddep VARCHAR(2);
 
 
 

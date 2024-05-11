@@ -48,7 +48,7 @@ SELECT
 FROM ( 
     SELECT * 
     FROM statistiques_pop 
-    WHERE type_statistique = 'population' AND annee_debut = '2020' AND annee_fin = '2020' 
+    WHERE type_statistique = 'population' AND annee_debut = 2020 AND annee_fin = 2020 
 ) P 
 JOIN commune C ON P.code_commune = C.code 
 JOIN departement D ON C.code_departement = D.code 

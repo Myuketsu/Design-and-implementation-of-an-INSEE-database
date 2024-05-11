@@ -17,6 +17,7 @@ REG = 'code_region'
 [commune]
 COM = 'code'
 LIBELLE = 'nom'
+SUPERF = 'superficie'
 DEP = 'code_departement'
 
 [cheflieuregion]
@@ -67,7 +68,6 @@ NBMAR = 'nombre_de_maries'
 
 [statistiques_pop]
 CODGEO = 'code_commune'
-SUPERF = 'superficie'
 P20_LOG = ['nombre logements', '2020']
 P14_LOG = ['nombre logements', '2014']
 P09_LOG = ['nombre logements', '2009']

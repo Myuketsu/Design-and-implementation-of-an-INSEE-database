@@ -1,16 +1,16 @@
 -- Tables population pour departement et region
 CREATE TABLE IF NOT EXISTS departement_pop (
     code_departement VARCHAR(2) REFERENCES departement(code),
-    annee VARCHAR(4),
-    population FLOAT,
+    annee INT NOT NULL,
+    population FLOAT NOT NULL CONSTRAINT check_pop_lt_0 CHECK(population >= 0),
 
     PRIMARY KEY (code_departement, annee)
 );
 
 CREATE TABLE IF NOT EXISTS region_pop (
     code_region VARCHAR(2) REFERENCES region(code),
-    annee VARCHAR(4),
-    population FLOAT,
+    annee INT NOT NULL,
+    population FLOAT NOT NULL CONSTRAINT check_pop_lt_0 CHECK(population >= 0),
 
     PRIMARY KEY (code_region, annee)
 );

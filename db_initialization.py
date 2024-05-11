@@ -46,6 +46,10 @@ if __name__ == '__main__':
     df = df[df['TYPECOM'].isin(['COM', 'ARM'])] # Filtration des données
     df = df[df['COM'].map(lambda x: int(x) < 97000 if x.isnumeric() else True)]
     arm_com = df[df['TYPECOM'] == 'ARM']['COM'] # Commune qui sont des arrondissements
+    df = df.merge(
+        read_csv(f'{PATH_TO_DATA}pop_census/base-cc-serie-historique-2020.CSV', sep=';', dtype='object')[['CODGEO', 'SUPERF']],
+        left_on='COM',
+        right_on='CODGEO')
     df = select_rename_columns(df, table) # Sélection et renommage des colonnes d'intérêts
     timeit(copy_to_sql, DataFrame_to_buffer(df), table) # Envoie par COPY des données à la BD
 

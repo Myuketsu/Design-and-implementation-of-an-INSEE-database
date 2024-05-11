@@ -15,7 +15,7 @@ __POOL: SimpleConnectionPool = SimpleConnectionPool(
 
 def execute_sql(query: str, vars: tuple | list | dict=None) -> DataFrame | None:
     """
-    Exécute une requête SQL avec des variables associées et renvoie les résultats sous forme de DataFrame pandas
+    Exécute UNE requête SQL avec des variables associées et renvoie les résultats sous forme de DataFrame pandas
     ou None si la requête ne renvoie aucune donnée.
 
     Args

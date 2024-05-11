@@ -1,6 +1,6 @@
 -- On définit nos fonctions qui vont mettre à jour la population pour chaque département/région
 -- La population d'un/d'une département/région est calculée que si l'ensemble des communes/département du/(de la) département/région est renseignée.
-CREATE OR REPLACE FUNCTION calcul_pop_dep(annee_cible VARCHAR) 
+CREATE OR REPLACE FUNCTION calcul_pop_dep(annee_cible INT) 
     RETURNS TABLE (
         code_departement VARCHAR,
         annee VARCHAR,
@@ -25,7 +25,7 @@ BEGIN
 END;
 $$ LANGUAGE 'plpgsql';
 
-CREATE OR REPLACE FUNCTION calcul_pop_reg(annee_cible VARCHAR) 
+CREATE OR REPLACE FUNCTION calcul_pop_reg(annee_cible INT) 
     RETURNS TABLE (
         code_region VARCHAR,
         annee VARCHAR,
@@ -51,7 +51,7 @@ END;
 $$ LANGUAGE 'plpgsql';
 
 -- Procédure pour insérer les données dans les tables 'departement_pop'/'region_pop'. Elle utilise les fonctions définies plutôt
-CREATE OR REPLACE PROCEDURE insert_population_if_all(annee_cible VARCHAR)
+CREATE OR REPLACE PROCEDURE insert_population_if_all(annee_cible INT)
 AS $$
 BEGIN
     -- Insertion des populations des départements

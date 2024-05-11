@@ -82,7 +82,7 @@ JOIN (
     FROM statistiques_pop S 
     JOIN commune C ON C.code = S.code_commune 
     JOIN departement D ON D.code = C.code_departement 
-    WHERE type_statistique = 'population' AND annee_debut = '2020'
+    WHERE type_statistique = 'population' AND annee_debut = 2020
     GROUP BY code_commune, C.nom, D.nom, D.code
 ) S ON D.code = S.code_departement
 WHERE M.groupe_age = '20_24' AND M.type_de_mariage = 'HF-H'
@@ -155,7 +155,7 @@ JOIN (
     FROM statistiques_pop S 
     JOIN commune C ON C.code = S.code_commune 
     JOIN departement D ON D.code = C.code_departement 
-    WHERE type_statistique = 'population' AND annee_debut = '2020'
+    WHERE type_statistique = 'population' AND annee_debut = 2020
     GROUP BY code_commune, C.nom, D.nom, D.code
 ) S ON D.code = S.code_departement
 WHERE M.groupe_age = '20_24' AND M.type_de_mariage = 'HF-H'

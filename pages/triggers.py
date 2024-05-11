@@ -23,22 +23,22 @@ REQUEST = """\
     JOIN (
         SELECT code_departement, population
         FROM departement_pop
-        WHERE annee = '2020'
+        WHERE annee = 2020
     ) DP ON D.code = DP.code_departement
     JOIN region R ON D.code_region = R.code
     JOIN (
         SELECT code_region, population
         FROM region_pop
-        WHERE annee = '2020'
+        WHERE annee = 2020
     ) RP ON R.code = RP.code_region
     JOIN (
         SELECT * 
         FROM statistiques_pop 
-        WHERE type_statistique = 'population' AND annee_debut = '2020'
+        WHERE type_statistique = 'population' AND annee_debut = 2020
     ) S ON C.code = S.code_commune;"""
 
 ACTIONS = {
-    'triggers_controls_insert': ('INSERT', 'INSERT INTO %s VALUES (999);'),
+    'triggers_controls_insert': ('INSERT', 'INSERT INTO %s VALUES (99);'),
     'triggers_controls_update': ('UPDATE', 'UPDATE %s SET nom = \'Ancienne-Aquitaine\' WHERE code = \'75\';'),
     'triggers_controls_delete': ('DELETE', 'DELETE FROM %s WHERE code = \'75\';'),
 }
