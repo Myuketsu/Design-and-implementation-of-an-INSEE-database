@@ -2,6 +2,7 @@
 
 Bonjour et bienvenue sur notre DashBoard.
 
+Ce projet à été réalisé à l'aide du language de programmation Python.  
 Vous y retrouverez toutes les réponses aux questions posées sur Moodle.
 Pour profiter pleinement des outils mis à disposition, on vous invite à respecter les étapes d'initialisation qui suivent.
 Assurez-vous d'ouvrir le projet à sa racine.
