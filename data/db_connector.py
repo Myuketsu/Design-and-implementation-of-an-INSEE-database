@@ -3,6 +3,7 @@ from psycopg2.extensions import connection
 from psycopg2.pool import PoolError
 
 from pandas import DataFrame
+from numpy.random import rand
 
 from io import StringIO
 
@@ -70,6 +71,34 @@ def execute_sql(query: str, vars: tuple | list | dict=None) -> DataFrame | None:
     finally: # On redonne la connexion dans tout les cas
         __POOL.putconn(conn)
     return query_result
+
+def get_conn_transaction() -> connection:
+    try:
+        return __POOL.getconn()
+    except PoolError as e:
+        __POOL.closeall()
+        return __POOL.getconn()
+
+def get_random_key() -> str:
+    return str(rand())
+
+def get_and_execute_transaction(query: str, key: str) -> None:
+    try:
+        conn: connection = __POOL.getconn(key=key)
+    except PoolError as e:
+        __POOL.closeall()
+        print(e.pgerror)
+        return None
+    
+    with conn.cursor() as cursor:
+        cursor.execute(query)
+    return None
+
+def commit_and_put_conn_transaction(key: str) -> None:
+    conn: connection = __POOL.getconn(key=key)
+    conn.commit()
+    __POOL.putconn(conn, key=key)
+    return None
 
 def excute_sql_file(file_name: str) -> None:
     with open(file_name, 'r') as sql_file:

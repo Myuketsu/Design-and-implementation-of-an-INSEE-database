@@ -3,7 +3,7 @@
 CREATE OR REPLACE FUNCTION calcul_pop_dep(annee_cible INT) 
     RETURNS TABLE (
         code_departement VARCHAR,
-        annee VARCHAR,
+        annee INT,
 		population FLOAT
 ) AS $$
 BEGIN
@@ -28,7 +28,7 @@ $$ LANGUAGE 'plpgsql';
 CREATE OR REPLACE FUNCTION calcul_pop_reg(annee_cible INT) 
     RETURNS TABLE (
         code_region VARCHAR,
-        annee VARCHAR,
+        annee INT,
 		population FLOAT
 ) AS $$
 BEGIN
