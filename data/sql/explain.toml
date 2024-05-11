@@ -59,29 +59,29 @@ Voici une description de chaque partie du plan :
 
 1. **Finalize GroupAggregate** :
    - Cette partie du plan représente la finalisation de l'agrégation de groupe.
-   - Coût estimé : entre 21837.75 et 21907.92.
+   - Coût estimé : entre 21758.55 et 21827.27.
    - Nombre de lignes estimé : 96.
    - Largeur de la sortie : 21 colonnes.
    - Group Key : La clé de regroupement est basée sur le code du département (`d.code`).
    
 2. **Gather Merge** :
    - Cette partie du plan est responsable de la fusion des résultats partiels de différents travailleurs.
-   - Coût estimé : entre 21837.75 et 21906.00.
+   - Coût estimé : entre 21758.55 et 21825.35.
    - Nombre de lignes estimé : 192.
    - Largeur de la sortie : 21 colonnes.
    - Travailleurs prévus : 2.
    
 3. **Partial GroupAggregate** :
    - Cette partie du plan effectue une agrégation partielle avant la fusion.
-   - Coût estimé : entre 20837.73 et 20883.81.
+   - Coût estimé : entre 20758.53 et 20803.17.
    - Nombre de lignes estimé : 96.
    - Largeur de la sortie : 21 colonnes.
    - Group Key : La clé de regroupement est basée sur le code du département (`d.code`).
    
 4. **Merge Join** :
    - Cette partie du plan effectue une jointure par fusion.
-   - Coût estimé : entre 20837.73 et 20871.69.
-   - Nombre de lignes estimé : 2232.
+   - Coût estimé : entre 20758.53 et 20791.41.
+   - Nombre de lignes estimé : 2160.
    - Largeur de la sortie : 21 colonnes.
    - Conditions de jointure : La jointure est effectuée sur les codes de département (`c.code_departement` et `d.code`).
    
