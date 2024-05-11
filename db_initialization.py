@@ -22,9 +22,9 @@ if __name__ == '__main__':
     print('Création des tables', end=' - ')
     timeit(excute_sql_file, f'{PATH_TO_SQL}create_tables.sql')
 
-    # # INSERT (COPY)
+    # INSERT (COPY)
 
-    # # Pour le dossier area
+    # Pour le dossier area
 
     print('\nDossier area\nCopy region', end=' - ')
     file_path, table = f'{PATH_TO_DATA}area/v_region_2023.csv', 'region'
@@ -67,7 +67,7 @@ if __name__ == '__main__':
     df = select_rename_columns(df, table)
     timeit(copy_to_sql, DataFrame_to_buffer(df), table)
 
-    # # Pour le dossier wedding
+    # Pour le dossier wedding
 
     print('\nDossier wedding\nCopy mariage', end=' - ')
     file_path, table = f'{PATH_TO_DATA}wedding/Dep1.csv', 'mariage'

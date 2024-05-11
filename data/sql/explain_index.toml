@@ -93,15 +93,15 @@ Dans le plan d'exécution sans l'utilisation d'un index, voici une analyse déta
 
 1. **HashAggregate (Agrégation par hachage)** :
    - Cette partie du plan d'exécution effectue une agrégation des données après la jointure, en regroupant les lignes en fonction des clés spécifiées (`m.nombre_de_maries`, `m.iddep`, `d.nom`).
-   - Coût estimé : entre 24960.70 et 25135.42.
+   - Coût estimé : entre 25067.46 et 25242.18.
    - Nombre de lignes estimé : 8736.
    - Largeur de la sortie : 43 colonnes.
 
 2. **Hash Join (Jointure par hachage)** :
    - Cette partie du plan d'exécution effectue une jointure par hachage entre les tables `departement d_1` et `departement d`.
-   - Coût estimé : entre 23881.99 et 24805.44.
-   - Nombre de lignes estimé : 15526.
-   - Largeur de la sortie : 35 colonnes.
+   - Coût estimé : entre 1027.53 et 19544.81.
+   - Nombre de lignes estimé : 13805.
+   - Largeur de la sortie : 40 colonnes.
    - Conditions de jointure : Les codes de département (`d_1.code` et `d.code`) sont utilisés comme clés de jointure.
 
 3. **Séquences de balayage (Seq Scan)** :
